@@ -1,0 +1,13 @@
+.input {
+  display: flex;
+  align-items: center;
+}
+
+.eye-icon {
+  margin-right: 2rem;
+  position: absolute;
+  right: 0;
+  &:hover {
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,51 @@
+<app-page title="teste">
+  <div class="container">
+    <app-row
+      justify-content="center"
+      align-items="center"
+      [style.height.vh]="100"
+    >
+      <app-col size="6">
+        <app-user-form header="Calendário de eventos" [attached]="'bottom'">
+          <div class="body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <app-input
+                type="text"
+                label="Nome de usuário"
+                formControlName="username"
+                placeholder="usuário"
+              ></app-input>
+              <app-input
+                type="password"
+                label="Senha de usuário"
+                formControlName="password"
+                placeholder="senha"
+              ></app-input>
+              <app-input
+                type="password"
+                label="Repetir senha de usuário"
+                formControlName="repeatPassword"
+                placeholder="senha"
+              ></app-input>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!form.valid"
+                routerLink=""
+                [replaceUrl]="true"
+              >
+                Cadastrar
+              </button>
+            </form>
+          </div>
+        </app-user-form>
+        <app-alert type="warning" [attached]="'top'" class="text-center">
+          <i class="fas fa-question"></i> Ainda já possui cadastro?
+          <a routerLink="/login" [replaceUrl]="true">
+            Acesse por aqui</a
+          ></app-alert
+        >
+      </app-col>
+    </app-row>
+  </div>
+</app-page>

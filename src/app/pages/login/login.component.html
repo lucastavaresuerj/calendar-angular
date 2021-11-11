@@ -1,0 +1,45 @@
+<app-page title="teste">
+  <div class="container">
+    <app-row
+      justify-content="center"
+      align-items="center"
+      [style.height.vh]="100"
+    >
+      <app-col size="6">
+        <app-user-form header="Calendário de eventos" [attached]="'bottom'">
+          <div class="body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <app-input
+                type="text"
+                label="Nome de usuário"
+                formControlName="name"
+                placeholder="usuário"
+              ></app-input>
+              <app-input
+                type="password"
+                label="Senha de usuário"
+                formControlName="password"
+                placeholder="senha"
+              ></app-input>
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="!form.valid"
+                routerLink=""
+                [replaceUrl]="true"
+              >
+                Login
+              </button>
+            </form>
+          </div>
+        </app-user-form>
+        <app-alert type="warning" [attached]="'top'" class="text-center">
+          <i class="fas fa-question"></i> Ainda não possui cadastro?
+          <a routerLink="/signin" [replaceUrl]="true">
+            Cadastre-se aqui</a
+          ></app-alert
+        >
+      </app-col>
+    </app-row>
+  </div>
+</app-page>
