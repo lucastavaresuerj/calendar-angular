@@ -1,9 +1,9 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[attached]',
 })
-export class AttachedDirective {
+export class AttachedDirective implements OnInit {
   @Input() attached: 'top' | 'bottom' | '' | boolean = true;
 
   style: { [name: string]: { [style: string]: string | number } } = {
@@ -31,7 +31,7 @@ export class AttachedDirective {
     }
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     if (this.attached == 'top') {
       this.mapStyle(this.style.top);
     }

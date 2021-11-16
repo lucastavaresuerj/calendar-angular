@@ -7,6 +7,7 @@ import {
   UrlTree,
 } from '@angular/router';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../shared/user';
 
 @Injectable({
@@ -20,6 +21,9 @@ export class AuthenticationService implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate() {
+    if (!environment.production && environment.noAuth) {
+      return true
+    }
     if (!this.auth) {
       this.router.navigate(['/login']);
       return false;

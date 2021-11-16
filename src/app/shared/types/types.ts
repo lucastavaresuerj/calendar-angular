@@ -5,3 +5,5 @@ export { justifyContent } from './justify-content';
 export { justifyContentBreakpoint } from './justify-content-breakpoint';
 export { size } from './size';
 export { alert } from './alert';
+export { color } from './color';
+export { corner } from './corner';

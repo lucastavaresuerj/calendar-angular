@@ -10,6 +10,10 @@ import { AuthenticationService } from './services/authentication.service';
 import { BootstrapComponentsModule } from './bootstrap-components/bootstrap-components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './pages/login/login.component';
+import { HeaderComponent } from './components/header/header.component';
+import { DirectivesModuleModule } from './bootstrap-components/directives-module/directives-module.module';
+import { DayService } from './services/day.service';
+import { LeftPainelComponent } from './components/left-painel/left-painel.component';
 
 @NgModule({
   declarations: [
@@ -18,15 +22,18 @@ import { LoginComponent } from './pages/login/login.component';
     SigninComponent,
     WebCalendarComponent,
     LoginComponent,
+    HeaderComponent,
+    LeftPainelComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BootstrapComponentsModule,
+    DirectivesModuleModule,
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, DayService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
