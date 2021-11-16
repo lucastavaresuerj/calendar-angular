@@ -1,0 +1,13 @@
+<app-navbar [border]="'bottom'" class="header">
+  <app-nav>
+    <app-nav-item>
+      <i class="fas fa-chevron-left" (click)="day.previousDay()"></i>
+    </app-nav-item>
+    <app-nav-item>
+      <app-button outline="dark"> Today </app-button>
+    </app-nav-item>
+    <app-nav-item>
+      <i class="fas fa-chevron-right" (click)="day.nextDay()"></i>
+    </app-nav-item>
+  </app-nav>
+</app-navbar>
