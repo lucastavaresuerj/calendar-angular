@@ -18,6 +18,7 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   @Input() category: color = 'primary';
   @Input() type: string = 'button';
   @Input() outline: color = '';
+  @Input() dropdown!: string;
 
   @ViewChild('button')
   button!: ElementRef<any>;
@@ -33,6 +34,11 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     if (this.outline) {
       this.addClass(`btn-outline-${this.outline}`);
+    } else {
+      this.addClass(`btn-${this.category}`);
+    }
+    if (this.dropdown == '') {
+      this.addClass('dropdown-toggle');
     }
   }
 }

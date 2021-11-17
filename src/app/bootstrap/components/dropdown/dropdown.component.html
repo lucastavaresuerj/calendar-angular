@@ -1,0 +1,24 @@
+<div class="dropdown">
+  <app-button
+    [category]="category"
+    [outline]="outline"
+    dropdown
+    data-bs-toggle="dropdown"
+    aria-expanded="false"
+  >
+    {{ title }}
+  </app-button>
+  <ul class="dropdown-menu">
+    <li *ngFor="let action of actions">
+      <a
+        class="dropdown-item"
+        [routerLink]="[action.href ? action.href : '']"
+        routerLinkActive="router-link-active"
+        (click)="action.click && action.click()"
+        >{{ action.name }}</a
+      >
+    </li>
+  </ul>
+</div>
+
+<!-- (click)="action.click && action.click()" -->

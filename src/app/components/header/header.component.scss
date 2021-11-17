@@ -3,3 +3,14 @@
   padding-top: 0;
   padding-bottom: 0;
 }
+
+:host ::ng-deep .fit-content ul.dropdown-menu {
+  min-width: unset;
+}
+
+.fas {
+  margin-inline: 8px;
+  &:hover {
+    cursor: pointer;
+  }
+}

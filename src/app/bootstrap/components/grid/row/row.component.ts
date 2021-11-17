@@ -4,6 +4,7 @@ import {
   ElementRef,
   Input,
   Renderer2,
+  ViewChild,
 } from '@angular/core';
 
 import {
@@ -27,6 +28,8 @@ export class RowComponent implements AfterViewInit {
   @Input('cols') columns: size = '';
   @Input('cols-breakpoints-size') columnsSize: columnsBreakSize = {};
 
+  @ViewChild('row') row!: ElementRef<HTMLElement>;
+
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   addClass(theClass: string) {
@@ -48,11 +51,14 @@ export class RowComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.addClass('row');
-    this.checkAndAdd(this.alignItems, () => `align-items-${this.alignItems}`);
-    this.checkAndAdd(
-      this.justifyContent,
-      () => `justify-content-${this.justifyContent}`
-    );
+
+    // this.checkAndAdd(this.alignItems, () => `align-items-${this.alignItems}`);
+    //
+    // this.checkAndAdd(
+    //   this.justifyContent,
+    //   () => `justify-content-${this.justifyContent}`
+    // );
+
     this.checkAndAdd(this.columns.toString(), () => `row-cols-${this.columns}`);
 
     this.checkAndAdd(
@@ -63,12 +69,12 @@ export class RowComponent implements AfterViewInit {
         }`
     );
 
-    this.checkAndAdd(
-      this.justifyContentBreakpoint,
-      (breakPoint: keyof columnsBreakSize) =>
-        `justify-content-${breakPoint}-${
-          this.justifyContentBreakpoint[breakPoint as keyof columnsBreakSize]
-        }`
-    );
+    // this.checkAndAdd(
+    //   this.justifyContentBreakpoint,
+    //   (breakPoint: keyof columnsBreakSize) =>
+    //     `justify-content-${breakPoint}-${
+    //       this.justifyContentBreakpoint[breakPoint as keyof columnsBreakSize]
+    //     }`
+    // );
   }
 }

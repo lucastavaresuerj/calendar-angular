@@ -22,7 +22,7 @@ export class AuthenticationService implements CanActivate {
 
   canActivate() {
     if (!environment.production && environment.noAuth) {
-      return true
+      return true;
     }
     if (!this.auth) {
       this.router.navigate(['/login']);
@@ -47,6 +47,11 @@ export class AuthenticationService implements CanActivate {
       return this.auth;
     }
     return false;
+  }
+
+  logout() {
+    this.auth = false;
+    this.router.navigate(['/login']);
   }
 
   signin(user: User): boolean {

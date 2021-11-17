@@ -1,13 +1,26 @@
 <app-navbar [border]="'bottom'" class="header">
+  <app-nav spacing="mt-0">
+    <app-nav-item>
+      <i class="fas fa-chevron-left fa-lg" (click)="day.previousDay()"></i>
+    </app-nav-item>
+    <app-nav-item>
+      <app-button outline="dark"> Hoje </app-button>
+    </app-nav-item>
+    <app-nav-item>
+      <i class="fas fa-chevron-right fa-lg" (click)="day.nextDay()"></i>
+    </app-nav-item>
+    <app-nav-item>
+      <p class="h3">{{ appDay }}</p>
+    </app-nav-item>
+  </app-nav>
   <app-nav>
-    <app-nav-item>
-      <i class="fas fa-chevron-left" (click)="day.previousDay()"></i>
-    </app-nav-item>
-    <app-nav-item>
-      <app-button outline="dark"> Today </app-button>
-    </app-nav-item>
-    <app-nav-item>
-      <i class="fas fa-chevron-right" (click)="day.nextDay()"></i>
-    </app-nav-item>
+    <app-nav-item
+      ><app-dropdown
+        [actions]="dropdownActions"
+        title="José"
+        category="light"
+        class="fit-content"
+      ></app-dropdown
+    ></app-nav-item>
   </app-nav>
 </app-navbar>

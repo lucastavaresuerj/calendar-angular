@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NavComponent } from './nav/nav.component';
 import { NavItemComponent } from './nav-item/nav-item.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { DirectivesModuleModule } from '../directives-module/directives-module.module';
+import { DirectivesModuleModule } from '../../directives/directives-module.module';
 
 @NgModule({
   declarations: [NavbarComponent, NavComponent, NavItemComponent],
