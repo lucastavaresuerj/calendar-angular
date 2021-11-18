@@ -1,6 +1,6 @@
 <app-navbar [border]="'bottom'" class="header">
-  <app-nav spacing="mt-0">
-    <app-nav-item>
+  <app-nav>
+    <app-nav-item spacing="ps-5">
       <i class="fas fa-chevron-left fa-lg" (click)="day.previousDay()"></i>
     </app-nav-item>
     <app-nav-item>
@@ -14,7 +14,7 @@
     </app-nav-item>
   </app-nav>
   <app-nav>
-    <app-nav-item
+    <app-nav-item spacing="pe-5"
       ><app-dropdown
         [actions]="dropdownActions"
         title="José"

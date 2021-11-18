@@ -16,6 +16,7 @@ import {
   selector: '[flex]',
 })
 export class FlexDirective implements AfterViewInit {
+  @Input() direction: 'row' | 'column' | '' = '';
   @Input('align-items') alignItems: align = '';
   @Input('justify-content') justifyContent: justifyContent = '';
   @Input('justify-content-breakpoint')
@@ -41,7 +42,9 @@ export class FlexDirective implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.alignItems, this.justifyContent);
+    this.addClass('d-flex');
+
+    this.checkAndAdd(this.direction, () => `flex-${this.direction}`);
 
     this.checkAndAdd(this.alignItems, () => `align-items-${this.alignItems}`);
 
