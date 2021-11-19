@@ -4,7 +4,7 @@
       <i class="fas fa-chevron-left fa-lg" (click)="day.previousDay()"></i>
     </app-nav-item>
     <app-nav-item>
-      <app-button outline="dark"> Hoje </app-button>
+      <app-button outline="dark" (click)="day.setToday()"> Hoje </app-button>
     </app-nav-item>
     <app-nav-item>
       <i class="fas fa-chevron-right fa-lg" (click)="day.nextDay()"></i>

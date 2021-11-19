@@ -21,6 +21,10 @@ export class DayService {
     this.navDays('next');
   }
 
+  setToday() {
+    this.setDay(new Date());
+  }
+
   previousDay() {
     this.navDays('previous');
   }
