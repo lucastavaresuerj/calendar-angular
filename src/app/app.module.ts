@@ -14,6 +14,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { DirectivesModuleModule } from './bootstrap/directives/directives-module.module';
 import { DayService } from './services/day.service';
 import { LeftPainelComponent } from './components/left-painel/left-painel.component';
+import { DatepickerComponent } from './components/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { LeftPainelComponent } from './components/left-painel/left-painel.compon
     LoginComponent,
     HeaderComponent,
     LeftPainelComponent,
+    DatepickerComponent,
   ],
   imports: [
     BrowserModule,
