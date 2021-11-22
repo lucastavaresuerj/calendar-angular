@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DayService } from 'src/app/services/day.service';
+import { DayService } from 'src/app/services';
 
 @Component({
   selector: 'app-web-calendar',
@@ -11,6 +11,6 @@ export class WebCalendarComponent implements OnInit {
   constructor(private day: DayService) {}
 
   ngOnInit(): void {
-    this.day.getDay().subscribe((date) => (this.today = date));
+    this.day.getDayObservable().subscribe((date) => (this.today = date));
   }
 }

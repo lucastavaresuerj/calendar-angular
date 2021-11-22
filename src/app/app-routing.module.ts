@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { SigninComponent } from './pages/signin/signin.component';
 import { WebCalendarComponent } from './pages/web-calendar/web-calendar.component';
-import { AuthenticationService } from './services/authentication.service';
+import { AuthenticationService } from './services/';
 
 const routes: Routes = [
   {

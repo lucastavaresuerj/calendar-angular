@@ -7,7 +7,6 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { color } from 'src/app/shared/types/color';
 
 @Component({
   selector: 'app-button',

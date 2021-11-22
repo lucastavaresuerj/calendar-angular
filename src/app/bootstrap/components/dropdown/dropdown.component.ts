@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { color } from 'src/app/shared/types/color';
 
 @Component({
   selector: 'app-dropdown',

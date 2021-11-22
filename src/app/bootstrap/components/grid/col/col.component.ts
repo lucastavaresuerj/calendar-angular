@@ -8,14 +8,6 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import {
-  columnsBreakSize,
-  align,
-  justifyContent,
-  size,
-  justifyContentBreakpoint,
-} from 'src/app/shared/types/types';
-
 @Component({
   selector: 'app-col',
   templateUrl: './col.component.html',

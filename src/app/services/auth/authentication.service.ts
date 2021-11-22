@@ -6,9 +6,7 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root',

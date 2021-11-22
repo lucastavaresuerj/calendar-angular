@@ -5,12 +5,6 @@ import {
   Input,
   Renderer2,
 } from '@angular/core';
-import { align } from 'src/app/shared/types/align';
-import { justifyContent } from 'src/app/shared/types/justify-content';
-import {
-  columnsBreakSize,
-  justifyContentBreakpoint,
-} from 'src/app/shared/types/types';
 
 @Directive({
   selector: '[flex]',

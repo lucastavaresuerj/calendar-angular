@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { justifyContentBreakpoint } from 'src/app/shared/types/types';
 
 @Component({
   selector: 'app-signin',

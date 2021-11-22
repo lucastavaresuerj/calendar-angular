@@ -9,7 +9,6 @@ import {
   EventEmitter,
   ViewChild,
 } from '@angular/core';
-import { alert } from 'src/app/shared/types/alert';
 
 @Component({
   selector: 'app-alert',

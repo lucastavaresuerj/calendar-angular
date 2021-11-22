@@ -34,6 +34,10 @@ export class DayService {
   }
 
   getDay() {
+    return this.day.value;
+  }
+
+  getDayObservable() {
     return this.day.asObservable();
   }
 }

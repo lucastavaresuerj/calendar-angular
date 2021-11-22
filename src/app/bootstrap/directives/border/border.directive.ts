@@ -1,6 +1,4 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { color } from 'src/app/shared/types/color';
-import { corner } from 'src/app/shared/types/corner';
 
 @Directive({
   selector: '[border]',
@@ -9,6 +7,7 @@ export class BorderDirective implements OnInit {
   @Input() border: corner | corner[] | undefined = '';
   @Input('not-border') notBorder: corner | corner[] = '';
   @Input('border-color') borderColor: color = '';
+  @Input() rounded!: corner | 'circle' | 'pill' | '';
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
@@ -44,6 +43,9 @@ export class BorderDirective implements OnInit {
 
     if (this.borderColor) {
       this.addClass(`border-${this.borderColor}`);
+    }
+    if (typeof this.rounded == 'string') {
+      this.addClass(`rounded${this.rounded ? '-' + this.rounded : ''}`);
     }
   }
 }
