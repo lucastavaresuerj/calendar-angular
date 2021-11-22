@@ -1,0 +1,10 @@
+<tr>
+  <td>
+    <h2>
+      <span [ngClass]="{ 'badge bg-primary rounded-pill': checkWithDayApp() }">
+        {{ day.day }}
+      </span>
+    </h2>
+  </td>
+  <app-event *ngFor="let event of day.events" [event]="event"></app-event>
+</tr>

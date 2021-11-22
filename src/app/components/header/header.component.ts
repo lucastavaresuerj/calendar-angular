@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/services/authentication.service';
-
-import { DayService } from 'src/app/services/day.service';
+import { AuthenticationService, DayService } from 'src/app/services/';
 
 @Component({
   selector: 'app-header',
@@ -21,7 +19,7 @@ export class HeaderComponent implements OnInit {
   constructor(public day: DayService, private auth: AuthenticationService) {}
 
   ngOnInit(): void {
-    this.day.getDay().subscribe(
+    this.day.getDayObservable().subscribe(
       (date) =>
         (this.appDay = date
           .toLocaleDateString('pt-BR', {
