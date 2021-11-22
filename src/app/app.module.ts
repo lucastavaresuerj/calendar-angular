@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { DpDatePickerModule } from 'ng2-date-picker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,7 +36,7 @@ import { DatepickerComponent } from './components/datepicker/datepicker.componen
     DirectivesModuleModule,
     FormsModule,
     ReactiveFormsModule,
-    DpDatePickerModule,
+    NgbModule,
   ],
   providers: [AuthenticationService, DayService],
   bootstrap: [AppComponent],

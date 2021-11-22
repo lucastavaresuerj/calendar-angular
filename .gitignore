@@ -3,7 +3,7 @@
 # compiled output
 /dist
 /tmp
-/out-tsc
+/out-tscs
 # Only exists if Bazel was run
 /bazel-out
 
@@ -39,6 +39,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+.angular/
 
 # System Files
 .DS_Store

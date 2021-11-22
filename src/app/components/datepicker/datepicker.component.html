@@ -1,12 +1,8 @@
 <div>
-  <dp-day-calendar
-    #dayPicker
-    theme="dp-material"
-    class="date-picker"
-    [config]="config"
-    [(ngModel)]="selectedDate"
-    (onGoToCurrent)="onCurrent()"
-    (ngModelChange)="onChange($event)"
-    (onSelect)="onSelect($event)"
-  ></dp-day-calendar>
+  <ngb-datepicker
+    #dp
+    [(ngModel)]="model"
+    (navigate)="date = $event.next"
+    (dateSelect)="onChange($event)"
+  ></ngb-datepicker>
 </div>

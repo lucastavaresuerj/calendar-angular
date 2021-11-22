@@ -6,7 +6,13 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { CalendarValue, DatePickerComponent } from 'ng2-date-picker';
+import {
+  NgbDateStruct,
+  NgbCalendar,
+  NgbDatepicker,
+  NgbDate,
+} from '@ng-bootstrap/ng-bootstrap';
+
 import { DayService } from 'src/app/services/day.service';
 
 @Component({
@@ -15,63 +21,43 @@ import { DayService } from 'src/app/services/day.service';
   styleUrls: ['./datepicker.component.scss'],
 })
 export class DatepickerComponent implements OnInit, AfterViewInit {
-  @ViewChild('dayPicker') datePicker!: DatePickerComponent;
+  @ViewChild('dp') dp!: NgbDatepicker;
 
   selectedDate!: Date;
-
-  config = {
-    hideOnOutsideClick: false,
-    hideInputContainer: true,
-    closeOnSelect: false,
-    locale: 'pt-BR',
-    monthFormatter: (date: moment.Moment) =>
-      date
-        .format('MMMM [de] YYYY')
-        .replace(/^(.)/g, (math, p1) => p1.toUpperCase()),
-    weekDayFormatter: (a: number) => ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'][a],
-  };
 
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    private day: DayService
+    private day: DayService,
+    private calendar: NgbCalendar
   ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    //this.datePicker.api.moveCalendarTo('06-08-2021');
-    //this.selectedDate = new Date('06-08-2021');
+    this.selectToday();
 
-    this.day.getDay().subscribe((date: Date) => {
-      console.log(date);
-      this.datePicker.moveCalendarTo(
-        date.toLocaleDateString('pt-BR', {
-          day: 'numeric',
-          month: 'numeric',
-          year: 'numeric',
-        })
-      );
+    this.day.getDay().subscribe((day: Date) => {
+      console.log(day);
+      this.model = {
+        day: day.getDate(),
+        month: day.getMonth() + 1,
+        year: day.getFullYear(),
+      };
+
+      this.dp.navigateTo(this.model);
     });
   }
 
-  onChange(event: moment.Moment) {
-    if (event) {
-      this.day.setDay(event.toDate());
-      console.log(this.datePicker);
-    }
+  model!: NgbDateStruct;
+
+  date!: { year: number; month: number };
+
+  onChange({ day, month, year }: NgbDate) {
+    this.day.setDay(new Date(year, month - 1, day));
   }
 
-  onSelect(event: any) {
-    console.log(event);
-    console.log(this.selectedDate);
-  }
-
-  onCurrent() {
-    this.day.setDay(new Date());
-  }
-
-  open() {
-    this.datePicker.api.open();
+  selectToday() {
+    this.model = this.calendar.getToday();
   }
 }
