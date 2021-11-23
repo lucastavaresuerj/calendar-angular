@@ -22,6 +22,7 @@ import { FlexDirective } from './directives/flex/flex.directive';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { RouterModule } from '@angular/router';
 import { SpacingDirective } from './directives/spacing/spacing.directive';
+import { SizingDirective } from './directives/sizing/sizing.directive';
 
 const declarations: any[] = [
   InputComponent,
@@ -54,6 +55,7 @@ const declarations: any[] = [
     BorderDirective,
     FlexDirective,
     SpacingDirective,
+    SizingDirective,
   ],
 })
 export class BootstrapModule {}

@@ -6,6 +6,7 @@ import { AsDirective } from './as/as.directive';
 import { BorderDirective } from './border/border.directive';
 import { FlexDirective } from './flex/flex.directive';
 import { SpacingDirective } from './spacing/spacing.directive';
+import { SizingDirective } from './sizing/sizing.directive';
 
 const declarations: any[] = [
   AttachedDirective,
@@ -14,6 +15,7 @@ const declarations: any[] = [
   BorderDirective,
   FlexDirective,
   SpacingDirective,
+  SizingDirective,
 ];
 
 @NgModule({

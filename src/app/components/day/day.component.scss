@@ -1,0 +1,5 @@
+:host ::ng-deep {
+  .no-bottom-line tr:last-child td {
+    border-bottom-width: 0px;
+  }
+}

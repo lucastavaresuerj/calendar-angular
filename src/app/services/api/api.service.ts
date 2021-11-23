@@ -5,71 +5,32 @@ import { DayService } from '..';
   providedIn: 'root',
 })
 export class ApiService {
-  getDays() {
-    return this.db.filter(({ day, month, year }: Day) => {
-      return (
-        new Date(year, month, day).getTime() >=
-        new Date(this.dayService.getDay().setHours(0, 0, 0, 0)).getTime()
-      );
-    });
+  getDays(date: Date) {
+    return [this.db[0]];
   }
 
-  db: Day[] = [
+  db: dateEvent[] = [
     {
-      day: 22,
-      month: 10,
-      year: 2021,
-      events: [
-        {
-          begin: {
-            hours: 15,
-            minutes: 0,
-          },
-          end: {
-            hours: 15,
-            minutes: 30,
-          },
-        },
-        {
-          begin: {
-            hours: 17,
-            minutes: 0,
-          },
-          end: {
-            hours: 18,
-            minutes: 0,
-          },
-        },
-      ],
+      name: 'Evento rápido',
+      begin: new Date(2021, 10, 22, 15, 0),
+      end: new Date(2021, 10, 22, 15, 30),
     },
     {
-      day: 25,
-      month: 10,
-      year: 2021,
-      events: [
-        {
-          begin: {
-            hours: 9,
-            minutes: 30,
-          },
-          end: {
-            hours: 15,
-            minutes: 0,
-          },
-        },
-        {
-          begin: {
-            hours: 20,
-            minutes: 0,
-          },
-          end: {
-            hours: 20,
-            minutes: 30,
-          },
-        },
-      ],
+      name: 'evento demorado',
+      begin: new Date(2021, 10, 22, 17, 0),
+      end: new Date(2021, 10, 22, 18, 0),
+    },
+    {
+      name: 'sem criatividade para dar nomes de eventos',
+      begin: new Date(2021, 10, 25, 9, 30),
+      end: new Date(2021, 10, 25, 15, 0),
+    },
+    {
+      name: 'Foi o melhor que eu consegui pensar',
+      begin: new Date(2021, 10, 25, 20, 0),
+      end: new Date(2021, 10, 25, 20, 30),
     },
   ];
 
-  constructor(private dayService: DayService) {}
+  constructor() {}
 }

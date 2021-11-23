@@ -27,7 +27,7 @@ export class SpacingDirective implements AfterViewInit {
   checkAndAdd(expression: string) {
     if (this.validate(expression)) {
       this.addClass(expression);
-    } else {
+    } else if (expression != '') {
       console.error(new Error('class malformed'));
     }
   }

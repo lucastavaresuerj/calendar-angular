@@ -3,14 +3,13 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DayComponent } from './day.component';
 
 describe('DayComponent', () => {
-  let component: DayComponent;
+  let component: dayComponent;
   let fixture: ComponentFixture<DayComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DayComponent ]
-    })
-    .compileComponents();
+      declarations: [DayComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

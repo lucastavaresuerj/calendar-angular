@@ -6,6 +6,8 @@ declare global {
     password: string;
   }
 
+  type sizing = 25 | 50 | 75 | 100 | 'auto';
+
   type alert =
     | 'primary'
     | 'secondary'
@@ -67,21 +69,20 @@ declare global {
     [key in breakpoints]?: size;
   };
 
-  type Guest = {
+  type guest = {
     name: string;
     confirmation: boolean | 'awaiting';
   };
 
-  type DayEvent = {
-    begin: Time;
-    end: Time;
-    guests?: Guest[];
+  type dateEvent = {
+    name: string;
+    begin: Date;
+    end: Date;
+    guests?: guest[];
   };
 
-  type Day = {
-    day: number;
-    month: number;
-    year: number;
-    events: DayEvent[];
+  type day = {
+    date: Date;
+    events?: dateEvent[];
   };
 }

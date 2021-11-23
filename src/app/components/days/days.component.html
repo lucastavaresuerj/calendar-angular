@@ -1,7 +1,8 @@
-<table clas="table">
-  <tbody>
-    <ng-container *ngFor="let day of days">
-      <app-day [day]="day"> </app-day>
-    </ng-container>
-  </tbody>
-</table>
+<ng-container *ngFor="let day of days; let i = index">
+  <table class="table table-borderless" [spacing]="i == 0 ? 'mt-3' : ''">
+    <tbody>
+      <tr app-day [day]="day" flex></tr>
+    </tbody>
+  </table>
+  <hr *ngIf="i < days.length - 1" />
+</ng-container>
