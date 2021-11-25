@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-button',
+  selector: '[app-button]',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
 })
@@ -19,18 +19,18 @@ export class ButtonComponent implements OnInit, AfterViewInit {
   @Input() outline: color = '';
   @Input() dropdown!: string;
 
-  @ViewChild('button')
-  button!: ElementRef<any>;
-
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   addClass(theClass: string) {
-    this.renderer.addClass(this.button.nativeElement, theClass);
+    this.renderer.addClass(this.el.nativeElement, theClass);
   }
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    this.renderer.setAttribute(this.el.nativeElement, 'type', this.type);
+    this.addClass('btn');
+
     if (this.outline) {
       this.addClass(`btn-outline-${this.outline}`);
     } else {

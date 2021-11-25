@@ -1,0 +1,41 @@
+<button
+  #trigger
+  hidden="true"
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#modal"
+>
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<ng-content select=".modal-trigger" (click)="console.log('click')"></ng-content>
+<div
+  class="modal fade"
+  id="modal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="onClose()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <ng-content select="body"></ng-content>
+      </div>
+      <div class="modal-footer">
+        <ng-content select="footer"></ng-content>
+      </div>
+    </div>
+  </div>
+</div>

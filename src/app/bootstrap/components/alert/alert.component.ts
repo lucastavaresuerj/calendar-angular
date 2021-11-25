@@ -37,7 +37,6 @@ export class AlertComponent implements OnInit, AfterViewInit {
   }
 
   onClose() {
-    console.log('click');
     this.el.nativeElement.remove();
     this.close.emit();
   }
