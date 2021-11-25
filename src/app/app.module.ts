@@ -6,7 +6,12 @@ import ptBr from '@angular/common/locales/pt';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { AuthenticationService, DayService } from './services';
+import {
+  AuthenticationService,
+  DayService,
+  UtilService,
+  ApiService,
+} from './services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { BootstrapModule } from './bootstrap/bootstrap.module';
@@ -52,6 +57,8 @@ registerLocaleData(ptBr);
   providers: [
     AuthenticationService,
     DayService,
+    ApiService,
+    UtilService,
     { provide: LOCALE_ID, useValue: 'pt-PT' },
   ],
   bootstrap: [AppComponent],

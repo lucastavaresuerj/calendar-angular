@@ -1,3 +1,12 @@
-<td>{{ event.name }}</td>
-<td>{{ getEventFormatTime() }}</td>
-<td>Convidados</td>
+<td class="col-2">{{ getEventFormatTime() }}</td>
+<td class="col-4">{{ event.name }}</td>
+<td>
+  <app-dropdown
+    *ngIf="event.guests; else noGuests"
+    [actions]="event.guests"
+    title="Convidados"
+    category="light"
+    outline="dark"
+  ></app-dropdown>
+  <ng-template #noGuests> Sem convidados </ng-template>
+</td>

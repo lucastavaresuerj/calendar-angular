@@ -9,11 +9,12 @@ import { ApiService, DayService } from 'src/app/services';
 export class DaysComponent implements OnInit {
   days!: day[];
 
-  constructor(private api: ApiService, private dayService: DayService) {
+  constructor(private api: ApiService, private dayService: DayService) {}
+
+  ngOnInit(): void {
     this.dayService.getDayObservable().subscribe((date) => {
-      // this.days = this.api.getDays(date);
+      this.days = this.api.getDays(date);
+      console.log(this.days);
     });
   }
-
-  ngOnInit(): void {}
 }

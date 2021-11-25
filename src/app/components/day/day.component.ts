@@ -12,13 +12,15 @@ export class DayComponent implements OnInit {
   constructor(private dayService: DayService) {}
 
   ngOnInit(): void {
-    console.log(this.day);
+    // console.log(this.day);
   }
 
   checkWithDayApp() {
-    return (
-      this.day.date.getTime() ===
-      new Date(new Date().setHours(0, 0, 0, 0)).getTime()
-    );
+    // console.log(
+    //   this.day.date,
+    //   this.day.date.getTime(),
+    //   new Date().setHours(0, 0, 0, 0)
+    // );
+    return this.day.date.getTime() === new Date().setHours(0, 0, 0, 0);
   }
 }

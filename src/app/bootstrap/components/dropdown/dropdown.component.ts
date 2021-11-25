@@ -14,5 +14,9 @@ export class DropdownComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (!this.title) {
+      this.title = this.actions[0].name;
+    }
+  }
 }

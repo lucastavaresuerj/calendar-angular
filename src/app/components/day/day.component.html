@@ -1,14 +1,14 @@
 <th scope="row" class="col-1">
   <h2>
     <span [ngClass]="{ 'badge bg-primary rounded-pill': checkWithDayApp() }">
-      <!-- {{ day.day }} -->
+      {{ day.date.getDate() }}
     </span>
   </h2>
 </th>
-<table class="table no-bottom-line">
+<table class="table no-bottom-line table-hover table-event">
   <tbody>
     <ng-container *ngFor="let event of day.events">
-      <tr app-event [event]="event"></tr>
+      <tr app-event [dayOfEvent]="day.date" [event]="event"></tr>
     </ng-container>
   </tbody>
 </table>
