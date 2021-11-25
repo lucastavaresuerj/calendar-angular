@@ -49,7 +49,6 @@ export class EventComponent implements OnInit {
         dateStyle
       )} até ${this.event.end.toLocaleTimeString('pt-br', dateOptions)}`;
     }
-    return '';
   }
 
   ngOnInit(): void {}
