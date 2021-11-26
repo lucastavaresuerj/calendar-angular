@@ -1,10 +1,8 @@
 <div spacing="mt-4" flex align-items="center" direction="column">
-  <app-modal title="teste">
-    <div class="modal-trigger">
-      <button app-button spacing="mb-4">Criar evento</button>
-    </div>
-
-    <div class="body">teste</div>
-  </app-modal>
+  <app-event-form (onSave)="createEvent($event)" title="Criar novo evento">
+    <button class="modal-trigger" app-button spacing="mb-4">
+      Criar evento
+    </button>
+  </app-event-form>
   <app-datepicker></app-datepicker>
 </div>

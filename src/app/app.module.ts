@@ -11,6 +11,7 @@ import {
   DayService,
   UtilService,
   ApiService,
+  EventService,
 } from './services';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -18,16 +19,20 @@ import { BootstrapModule } from './bootstrap/bootstrap.module';
 import { DirectivesModuleModule } from './bootstrap/directives/directives-module.module';
 
 import { AppComponent } from './app.component';
-import { DayComponent } from './components/day/day.component';
+
 import { LoginComponent } from './pages/login/login.component';
+import { SigninComponent } from './pages/signin/signin.component';
+import { WebCalendarComponent } from './pages/web-calendar/web-calendar.component';
+
+import { DayComponent } from './components/day/day.component';
 import { PageComponent } from './components/page/page.component';
 import { DaysComponent } from './components/days/days.component';
-import { SigninComponent } from './pages/signin/signin.component';
 import { EventComponent } from './components/event/event.component';
 import { HeaderComponent } from './components/header/header.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
-import { WebCalendarComponent } from './pages/web-calendar/web-calendar.component';
 import { LeftPainelComponent } from './components/left-painel/left-painel.component';
+import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
+import { EventFormComponent } from './components/event-form/event-form.component';
 
 registerLocaleData(ptBr);
 
@@ -44,6 +49,8 @@ registerLocaleData(ptBr);
     DaysComponent,
     DayComponent,
     EventComponent,
+    ContentWrapperComponent,
+    EventFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +66,7 @@ registerLocaleData(ptBr);
     DayService,
     ApiService,
     UtilService,
+    EventService,
     { provide: LOCALE_ID, useValue: 'pt-PT' },
   ],
   bootstrap: [AppComponent],

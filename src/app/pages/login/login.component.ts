@@ -13,8 +13,6 @@ export class LoginComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  justBreak: justifyContentBreakpoint = { md: 'start', xl: 'center' };
-
   constructor(private authService: AuthenticationService) {}
 
   ngOnInit(): void {}

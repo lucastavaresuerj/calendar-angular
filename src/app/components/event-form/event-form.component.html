@@ -1,0 +1,74 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{ title }}</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <app-input
+        type="text"
+        label="Título"
+        formControlName="name"
+        placeholder="nome do evento"
+      ></app-input>
+      <app-row>
+        <app-col col="6"
+          ><label>Data de início</label>
+          <div class="input-group" spacing="mb-3">
+            <input
+              class="form-control"
+              placeholder="dd/mm/yyyy"
+              name="dp-begin"
+              formControlName="begin"
+              [(ngModel)]="begin"
+              ngbDatepicker
+              #dpBegin="ngbDatepicker"
+            />
+            <span (click)="dpBegin.toggle()" class="input-group-text"
+              ><i class="fas fa-calendar-alt"></i
+            ></span>
+          </div>
+          <ngb-timepicker
+            [(ngModel)]="timeBegin"
+            formControlName="timeBegin"
+          ></ngb-timepicker>
+        </app-col>
+        <app-col col="6"
+          ><label>Data de término</label>
+          <div class="input-group" spacing="mb-3">
+            <input
+              class="form-control"
+              placeholder="yyyy-mm-dd"
+              name="dp-end"
+              formControlName="end"
+              [(ngModel)]="end"
+              ngbDatepicker
+              #dpEnd="ngbDatepicker"
+            />
+            <span (click)="dpEnd.toggle()" class="input-group-text"
+              ><i class="fas fa-calendar-alt"></i
+            ></span>
+          </div>
+          <ngb-timepicker
+            [(ngModel)]="timeEnd"
+            formControlName="timeEnd"
+          ></ngb-timepicker>
+        </app-col>
+      </app-row>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="save()">
+      Save
+    </button>
+  </div>
+</ng-template>
+
+<app-content-wrapper (click)="open(content)">
+  <ng-content select=".modal-trigger"></ng-content>
+</app-content-wrapper>

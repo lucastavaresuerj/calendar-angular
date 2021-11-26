@@ -23,7 +23,7 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
 import { RouterModule } from '@angular/router';
 import { SpacingDirective } from './directives/spacing/spacing.directive';
 import { SizingDirective } from './directives/sizing/sizing.directive';
-import { ModalComponent } from './components/modal/modal.component';
+import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 
 const declarations: any[] = [
   InputComponent,
@@ -31,11 +31,10 @@ const declarations: any[] = [
   AlertComponent,
   ButtonComponent,
   DropdownComponent,
-  ModalComponent,
 ];
 
 @NgModule({
-  declarations: [...declarations],
+  declarations: [...declarations, ContentWrapperComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -59,5 +58,6 @@ const declarations: any[] = [
     SpacingDirective,
     SizingDirective,
   ],
+  schemas: [],
 })
 export class BootstrapModule {}
