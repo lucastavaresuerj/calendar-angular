@@ -1,0 +1,10 @@
+<ul class="list-group">
+  <ng-container *ngFor="let item of list; let i = index">
+    <li class="list-group-item" flex justify-content="between">
+      {{ item }}
+      <span *ngIf="removable" class="text-danger pointer" (click)="remove(i)">
+        <i class="fas fa-trash"></i>
+      </span>
+    </li>
+  </ng-container>
+</ul>

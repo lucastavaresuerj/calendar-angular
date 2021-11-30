@@ -24,6 +24,7 @@ import { RouterModule } from '@angular/router';
 import { SpacingDirective } from './directives/spacing/spacing.directive';
 import { SizingDirective } from './directives/sizing/sizing.directive';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
+import { ListGroupComponent } from './components/list-group/list-group.component';
 
 const declarations: any[] = [
   InputComponent,
@@ -31,6 +32,7 @@ const declarations: any[] = [
   AlertComponent,
   ButtonComponent,
   DropdownComponent,
+  ListGroupComponent,
 ];
 
 @NgModule({

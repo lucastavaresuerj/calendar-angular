@@ -10,6 +10,9 @@
       (focus)="onFocus()"
       [disabled]="disabled"
       [placeholder]="placeholder"
+      [ngClass]="{
+        'is-invalid': error
+      }"
     />
     <i
       class="fas fa-eye eye-icon"
@@ -17,4 +20,5 @@
       (click)="togglePassword()"
     ></i>
   </div>
+  <ng-content *ngIf="error" select=".input-error"></ng-content>
 </div>

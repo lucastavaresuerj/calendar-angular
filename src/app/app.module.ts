@@ -4,7 +4,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
 
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDateAdapter,
+  NgbDateParserFormatter,
+  NgbModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 import {
   AuthenticationService,
@@ -12,6 +16,8 @@ import {
   UtilService,
   ApiService,
   EventService,
+  CustomDateParserFormatter,
+  DatepickerFormatter,
 } from './services';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -67,6 +73,8 @@ registerLocaleData(ptBr);
     ApiService,
     UtilService,
     EventService,
+    DatepickerFormatter,
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
     { provide: LOCALE_ID, useValue: 'pt-PT' },
   ],
   bootstrap: [AppComponent],

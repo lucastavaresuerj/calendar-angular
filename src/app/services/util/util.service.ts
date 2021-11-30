@@ -28,5 +28,19 @@ export class UtilService {
     return days;
   }
 
+  getDateAtt(date: Date) {
+    return {
+      year: date.getFullYear(),
+      month: date.getMonth(),
+      date: date.getDate(),
+      day: date.getDay(),
+      hours: date.getHours(),
+      minutes: date.getMinutes(),
+      seconds: date.getSeconds(),
+      milliseconds: date.getMilliseconds(),
+      time: date.getTime(),
+    };
+  }
+
   constructor(@Inject(LOCALE_ID) public locale: string) {}
 }

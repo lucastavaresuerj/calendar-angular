@@ -9,19 +9,34 @@
     ></button>
   </div>
   <div class="modal-body">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="save()">
       <app-input
         type="text"
         label="Título"
         formControlName="name"
         placeholder="nome do evento"
-      ></app-input>
+        class="name-input"
+        [error]="
+          (formControl.name.dirty || submitted) &&
+          formControl.name.errors?.required
+        "
+      >
+        <span class="input-error text-danger" spacing="mb-3">
+          O evento precisa de um título
+        </span>
+      </app-input>
+      <span [hidden]="!form.errors?.date" class="text-danger span-error"
+        >A data de início não pode ser maior que a data de fim
+      </span>
       <app-row>
-        <app-col col="6"
-          ><label>Data de início</label>
+        <app-col col="6">
+          <label>Data de início</label>
           <div class="input-group" spacing="mb-3">
             <input
               class="form-control"
+              [ngClass]="{
+                'is-invalid': form.errors?.date
+              }"
               placeholder="dd/mm/yyyy"
               name="dp-begin"
               formControlName="begin"
@@ -33,17 +48,16 @@
               ><i class="fas fa-calendar-alt"></i
             ></span>
           </div>
-          <ngb-timepicker
-            [(ngModel)]="timeBegin"
-            formControlName="timeBegin"
-          ></ngb-timepicker>
         </app-col>
-        <app-col col="6"
-          ><label>Data de término</label>
+        <app-col col="6">
+          <label>Data de término</label>
           <div class="input-group" spacing="mb-3">
             <input
               class="form-control"
-              placeholder="yyyy-mm-dd"
+              placeholder="dd/mm/yyyy"
+              [ngClass]="{
+                'is-invalid': form.errors?.date
+              }"
               name="dp-end"
               formControlName="end"
               [(ngModel)]="end"
@@ -54,12 +68,57 @@
               ><i class="fas fa-calendar-alt"></i
             ></span>
           </div>
-          <ngb-timepicker
-            [(ngModel)]="timeEnd"
-            formControlName="timeEnd"
-          ></ngb-timepicker>
         </app-col>
       </app-row>
+      <app-row>
+        <span [hidden]="!form.errors?.time" class="text-danger span-error"
+          >A hora de início não pode ser maior que a hora de fim
+        </span>
+        <app-col col="6">
+          <div class="time-picker" flex justify-content="center">
+            <ngb-timepicker
+              [(ngModel)]="timeBegin"
+              formControlName="timeBegin"
+            ></ngb-timepicker>
+          </div>
+        </app-col>
+        <app-col col="6">
+          <div class="time-picker" flex justify-content="center">
+            <ngb-timepicker
+              [(ngModel)]="timeEnd"
+              formControlName="timeEnd"
+            ></ngb-timepicker>
+          </div>
+        </app-col>
+      </app-row>
+      <label>Adicionar convidados</label>
+      <div class="input-group mb-3">
+        <input
+          #select
+          id="typeahead-format"
+          type="text"
+          class="form-control"
+          [(ngModel)]="model"
+          formControlName="typeahead"
+          [ngbTypeahead]="search"
+          [editable]="false"
+          [inputFormatter]="formatter"
+          [resultFormatter]="formatter"
+          aria-label="Example text with button addon"
+          aria-describedby="button-addon1"
+        />
+        <button app-button id="button-addon1" (click)="addGuest()">
+          Adicionar
+        </button>
+      </div>
+      <ng-container *ngIf="guests.length > 0">
+        <p>Convidadoss</p>
+        <app-list-group
+          [list]="guestsList"
+          [removable]="true"
+          (onRemove)="onRemoveGuest($event)"
+        ></app-list-group>
+      </ng-container>
     </form>
   </div>
   <div class="modal-footer">

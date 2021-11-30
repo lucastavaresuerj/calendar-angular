@@ -75,6 +75,21 @@ export class ApiService {
       begin: new Date(2021, 10, 25, 20, 0),
       end: new Date(2021, 10, 25, 22, 0),
     },
+    {
+      name: 'Evento que pega quase o dia todo',
+      begin: new Date(2021, 10, 29, 10, 0),
+      end: new Date(2021, 10, 29, 22, 0),
+    },
+  ];
+
+  getUsers() {
+    return this.users;
+  }
+
+  users = [
+    { id: 1, name: 'José' },
+    { id: 2, name: 'Will' },
+    { id: 3, name: 'Grace' },
   ];
 
   constructor(private util: UtilService) {
