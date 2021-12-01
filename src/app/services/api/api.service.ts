@@ -44,20 +44,20 @@ export class ApiService {
       .filter(({ date }) => this.util.dateDiffDay(date, initialDate) >= 0);
   }
 
+  users = [
+    { id: 1, name: 'José' },
+    { id: 2, name: 'Will' },
+    { id: 3, name: 'Grace' },
+  ];
+
   db: dateEvent[] = [
     {
       name: 'Evento rápido',
       begin: new Date(2021, 10, 22, 15, 0),
       end: new Date(2021, 10, 22, 15, 30),
       guests: [
-        {
-          name: 'Will',
-          confirmation: true,
-        },
-        {
-          name: 'Grace',
-          confirmation: true,
-        },
+        { ...this.users[1], confirmation: true },
+        { ...this.users[2], confirmation: true },
       ],
     },
     {
@@ -86,11 +86,13 @@ export class ApiService {
     return this.users;
   }
 
-  users = [
-    { id: 1, name: 'José' },
-    { id: 2, name: 'Will' },
-    { id: 3, name: 'Grace' },
-  ];
+  editEvent(event: any) {
+    return event;
+  }
+
+  deleteEvent(event: any) {
+    return;
+  }
 
   constructor(private util: UtilService) {
     this.formattDaysEvents = this.formattDaysEvents.bind(this);

@@ -10,8 +10,9 @@ import {
   NgbModal,
   NgbActiveModal,
   NgbTimeStruct,
-  NgbDate,
   NgbCalendar,
+  NgbDateStruct,
+  NgbDate,
 } from '@ng-bootstrap/ng-bootstrap';
 import { OperatorFunction, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
@@ -26,22 +27,24 @@ import { ApiService, UtilService } from 'src/app/services';
 export class EventFormComponent implements OnInit {
   public model!: { id: number; name: string };
 
-  begin!: NgbDate;
-  end!: NgbDate;
+  name: string = '';
+  begin!: NgbDate | null;
+  end!: NgbDate | null;
   timeBegin!: NgbTimeStruct;
   timeEnd!: NgbTimeStruct;
-  guests: { id: number; name: string }[] = [];
-  allGuests!: { id: number; name: string }[];
+  guests: guest[] = [];
+  allGuests!: guest[];
 
   submitted = false;
   modal!: NgbActiveModal;
 
   @Input() title!: string;
+  @Input() event!: dateEvent;
   @Output() onSave: EventEmitter<any> = new EventEmitter();
 
   form: FormGroup = new FormGroup(
     {
-      name: new FormControl('', [Validators.required]),
+      name: new FormControl(this.name, [Validators.required]),
       begin: new FormControl(this.begin, [Validators.required]),
       end: new FormControl(this.end, [Validators.required]),
       timeBegin: new FormControl(this.timeBegin, [Validators.required]),
@@ -89,7 +92,6 @@ export class EventFormComponent implements OnInit {
     private api: ApiService,
     private calendar: NgbCalendar
   ) {
-    this.initFields();
     this.allGuests = api.getUsers();
   }
 
@@ -102,23 +104,6 @@ export class EventFormComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
-  initFields() {
-    this.begin = this.calendar.getToday();
-    this.end = this.begin;
-
-    const now = this.util.getDateAtt(new Date());
-    this.timeBegin = { hour: now.hours, minute: now.minutes, second: 0 };
-
-    const nowPlus30 = this.util.getDateAtt(
-      new Date(new Date().setMinutes(this.timeBegin.minute + 30))
-    );
-    this.timeEnd = {
-      hour: nowPlus30.hours,
-      minute: nowPlus30.minutes,
-      second: 0,
-    };
-  }
 
   addGuest() {
     this.guests.push(this.model);
@@ -138,10 +123,69 @@ export class EventFormComponent implements OnInit {
     }
   }
 
+  createEvent() {
+    this.begin = this.calendar.getToday();
+    this.end = this.begin;
+
+    const now = this.util.getDateAtt(new Date());
+    this.timeBegin = { hour: now.hours, minute: now.minutes, second: 0 };
+
+    const nowPlus30 = this.util.getDateAtt(
+      new Date(new Date().setMinutes(this.timeBegin.minute + 30))
+    );
+    this.timeEnd = {
+      hour: nowPlus30.hours,
+      minute: nowPlus30.minutes,
+      second: 0,
+    };
+  }
+
+  inputEvent() {
+    const { name, begin, end, guests } = this.event;
+    this.guests = guests || [];
+
+    console.log(this.event);
+
+    this.form.get('name')?.setValue(name);
+
+    const beginAtts = this.util.getDateAtt(begin);
+    this.begin = NgbDate.from({
+      year: beginAtts.year,
+      month: beginAtts.month,
+      day: beginAtts.day,
+    } as NgbDateStruct);
+    this.timeBegin = {
+      hour: beginAtts.hours,
+      minute: beginAtts.minutes,
+      second: beginAtts.seconds,
+    };
+
+    const endAtts = this.util.getDateAtt(end);
+    this.end = NgbDate.from({
+      year: endAtts.year,
+      month: endAtts.month,
+      day: endAtts.day,
+    } as NgbDateStruct);
+    this.timeEnd = {
+      hour: endAtts.hours,
+      minute: endAtts.minutes,
+      second: endAtts.seconds,
+    };
+  }
+
+  initFields() {
+    if (this.event) {
+      this.inputEvent();
+    } else {
+      this.createEvent();
+    }
+  }
+
   open(content: any) {
     this.form.reset();
     this.initFields();
     this.submitted = false;
+    this.modalService.dismissAll();
     this.modal = this.modalService.open(content, {
       ariaLabelledBy: 'modal-basic-title',
     });

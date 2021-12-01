@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UtilService } from 'src/app/services';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ApiService, UtilService } from 'src/app/services';
 
 @Component({
   selector: '[app-event]',
@@ -10,7 +11,13 @@ export class EventComponent implements OnInit {
   @Input() event!: dateEvent;
   @Input() dayOfEvent!: Date;
 
-  constructor(private util: UtilService) {}
+  modalAlert!: NgbModalRef;
+
+  constructor(
+    private util: UtilService,
+    private api: ApiService,
+    private modalService: NgbModal
+  ) {}
 
   getEventFormatTime() {
     // Gambiarra: o TypeScript não aceita todos as opções de data que o JavaScript
@@ -52,4 +59,20 @@ export class EventComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  editEvent(event: any) {
+    this.api.editEvent(event);
+    console.log(event);
+  }
+
+  deleteEvent() {
+    this.api.deleteEvent(this.event);
+    this.modalAlert.close();
+  }
+
+  openModalDelete(content: any) {
+    this.modalAlert = this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title',
+    });
+  }
 }

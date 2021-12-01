@@ -1,5 +1,54 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Deletar evento</h4>
+    <button
+      type="button"
+      class="close"
+      aria-describedby="modal-title"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <strong
+        >Você tem certeza que quer deletar o evento
+        <span class="text-primary"> "{{ event.name }}" </span>
+        ?
+      </strong>
+    </p>
+    <p>Todas as informaçãoes desse evento serão perdidas</p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="modal.dismiss('cancel click')"
+    >
+      Cancel
+    </button>
+    <button type="button" class="btn btn-danger" (click)="deleteEvent()">
+      Ok
+    </button>
+  </div>
+</ng-template>
+
 <td class="col-2">{{ getEventFormatTime() }}</td>
-<td class="col-4">{{ event.name }}</td>
+<td [style]="{ width: '60px' }">
+  <app-event-form
+    (onSave)="editEvent($event)"
+    title="Editar evento"
+    [event]="event"
+  >
+    <i class="fas fa-edit modal-trigger pointer" spacing="me-1"></i>
+  </app-event-form>
+  <i class="fas fa-trash pointer" (click)="openModalDelete(content)"></i>
+</td>
+<td class="col-4">
+  {{ event.name }}
+</td>
+
 <td>
   <app-dropdown
     *ngIf="event.guests; else noGuests"

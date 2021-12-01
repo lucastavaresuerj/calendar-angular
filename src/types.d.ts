@@ -70,8 +70,9 @@ declare global {
   };
 
   type guest = {
+    id: number;
     name: string;
-    confirmation: boolean | 'awaiting';
+    confirmation?: boolean | 'awaiting';
   };
 
   type dateEvent = {
