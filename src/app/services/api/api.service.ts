@@ -1,4 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 import { UtilService } from '..';
 
 @Injectable({
@@ -6,7 +9,7 @@ import { UtilService } from '..';
 })
 export class ApiService {
   // TODO
-  // Essas duas parte eu preciso implementar no back
+  // Essas duas partes eu preciso implementar no back
   formattDaysEvents(accumulator: any, { begin, end, ...restEvent }: dateEvent) {
     function addKeyValueToAcc(key: string, value: dateEvent) {
       return {

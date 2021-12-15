@@ -1,6 +1,25 @@
+<ng-template #required let-name="name">
+  <span class="input-error text-danger" spacing="mb-3">
+    O campo de {{ name }} é necessário
+  </span>
+</ng-template>
+
+<ng-template #minlength let-size="length">
+  <span class="input-error text-danger" spacing="mb-3">
+    São nescessários ao menos {{ size }} caracteres
+  </span>
+</ng-template>
+
+<ng-template #password>
+  <span class="input-error text-danger" spacing="mb-3">
+    As senham precisam ser iguais
+  </span>
+</ng-template>
+
 <app-page title="Cadastro">
   <div class="container">
     <app-row
+      flex
       justify-content="center"
       align-items="center"
       [style.height.vh]="100"
@@ -8,39 +27,108 @@
       <app-col size="6">
         <app-user-form header="Calendário de eventos" [attached]="'bottom'">
           <div class="body">
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <form [formGroup]="form">
               <app-input
                 type="text"
                 label="Nome de usuário"
-                formControlName="username"
+                formControlName="name"
                 placeholder="usuário"
-              ></app-input>
+                [error]="
+                  (formControl.name.dirty || submitted) &&
+                  formControl.name.invalid
+                "
+              >
+                <ng-container
+                  *ngIf="formControl.name.errors?.required"
+                  [ngTemplateOutlet]="required"
+                  [ngTemplateOutletContext]="{ name: 'nome de usuário' }"
+                ></ng-container>
+                <ng-container
+                  *ngIf="formControl.name.errors?.minlength"
+                  [ngTemplateOutlet]="minlength"
+                  [ngTemplateOutletContext]="{ length: 2 }"
+                ></ng-container>
+              </app-input>
+
               <app-input
                 type="password"
                 label="Senha de usuário"
                 formControlName="password"
                 placeholder="senha"
-              ></app-input>
+                [error]="
+                  (formControl.password.dirty || submitted) &&
+                  (formControl.password.invalid || form.errors?.password)
+                "
+              >
+                <ng-container
+                  *ngIf="formControl.password.errors?.require"
+                  [ngTemplateOutlet]="required"
+                  [ngTemplateOutletContext]="{ name: 'senha' }"
+                >
+                </ng-container>
+                <ng-container
+                  *ngIf="formControl.password.errors?.minlength"
+                  [ngTemplateOutlet]="minlength"
+                  [ngTemplateOutletContext]="{ length: minLengthPass }"
+                >
+                </ng-container>
+                <ng-container
+                  *ngIf="form.errors?.password"
+                  [ngTemplateOutlet]="password"
+                >
+                </ng-container>
+              </app-input>
               <app-input
                 type="password"
                 label="Repetir senha de usuário"
                 formControlName="repeatPassword"
                 placeholder="senha"
-              ></app-input>
+                [error]="
+                  (formControl.repeatPassword.dirty || submitted) &&
+                  (formControl.repeatPassword.invalid || form.errors?.password)
+                "
+              >
+                <ng-container
+                  *ngIf="formControl.repeatPassword.errors?.require"
+                  [ngTemplateOutlet]="required"
+                  [ngTemplateOutletContext]="{ name: 'senha' }"
+                >
+                </ng-container>
+                <ng-container
+                  *ngIf="formControl.repeatPassword.errors?.minlength"
+                  [ngTemplateOutlet]="minlength"
+                  [ngTemplateOutletContext]="{ length: minLengthPass }"
+                >
+                </ng-container>
+                <ng-container
+                  *ngIf="form.errors?.password"
+                  [ngTemplateOutlet]="password"
+                >
+                </ng-container>
+              </app-input>
               <button
-                type="submit"
-                class="btn btn-primary"
+                app-button
+                type="button"
+                (click)="onSubmit()"
                 [disabled]="!form.valid"
-                routerLink=""
-                [replaceUrl]="true"
               >
                 Cadastrar
               </button>
             </form>
           </div>
         </app-user-form>
+        <ng-container *ngIf="!!loginErrorMessage">
+          <app-alert
+            type="warning"
+            [attached]
+            class="text-center"
+            (close)="onCloseAlert()"
+          >
+            {{ loginErrorMessage }}
+          </app-alert></ng-container
+        >
         <app-alert type="warning" [attached]="'top'" class="text-center">
-          <i class="fas fa-question"></i> Ainda já possui cadastro?
+          <i class="fas fa-question"></i> Já possui cadastro?
           <a routerLink="/login" [replaceUrl]="true">
             Acesse por aqui</a
           ></app-alert

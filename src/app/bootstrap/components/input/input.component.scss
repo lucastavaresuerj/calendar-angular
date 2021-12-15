@@ -11,3 +11,10 @@
     cursor: pointer;
   }
 }
+
+:host[type="password"] {
+  .was-validated .form-control:invalid,
+  .form-control.is-invalid {
+    background: unset !important;
+  }
+}

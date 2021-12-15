@@ -1,4 +1,4 @@
-import { Component, Injectable, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -17,7 +17,7 @@ export class InputComponent implements OnInit, ControlValueAccessor {
   @Input() type: string = '';
   @Input() label: string = '';
   @Input() placeholder: string = '';
-  @Input() error: boolean = false;
+  @Input() error: boolean | null = false;
 
   value: string = '';
   touched = false;

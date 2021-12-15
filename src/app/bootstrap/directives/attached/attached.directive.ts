@@ -4,9 +4,9 @@ import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
   selector: '[attached]',
 })
 export class AttachedDirective implements OnInit {
-  @Input() attached: 'top' | 'bottom' | '' | boolean = true;
+  @Input() attached: 'top' | 'bottom' | boolean | undefined = true;
 
-  style: { [name: string]: { [style: string]: string | number } } = {
+  style: { [name: string]: { [style: string]: number } } = {
     top: {
       'border-top-left-radius': 0,
       'border-top-right-radius': 0,
@@ -25,20 +25,19 @@ export class AttachedDirective implements OnInit {
     this.renderer.setStyle(this.el.nativeElement.firstChild, style, value);
   }
 
-  mapStyle(style: { [key: string]: string | number }) {
+  mapStyle(style: { [key: string]: number }) {
     for (let [styleName, value] of Object.entries(style)) {
       this.setStyle(styleName, value.toString());
     }
   }
 
   ngOnInit(): void {
+    console.log(this.attached);
     if (this.attached == 'top') {
       this.mapStyle(this.style.top);
-    }
-    if (this.attached == 'bottom') {
+    } else if (this.attached == 'bottom') {
       this.mapStyle(this.style.bottom);
-    }
-    if (this.attached == '') {
+    } else if (this.attached == true) {
       this.mapStyle({ ...this.style.top, ...this.style.bottom });
     }
   }

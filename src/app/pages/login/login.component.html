@@ -1,3 +1,9 @@
+<ng-template #required let-name="name">
+  <span class="input-error text-danger" spacing="mb-3">
+    O campo de {{ name }} é necessário
+  </span>
+</ng-template>
+
 <app-page title="Login">
   <div class="container">
     <app-row
@@ -9,31 +15,61 @@
       <app-col size="6">
         <app-user-form header="Calendário de eventos" [attached]="'bottom'">
           <div class="body">
-            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <form [formGroup]="form" (keydown)="printForm()">
               <app-input
                 type="text"
                 label="Nome de usuário"
                 formControlName="name"
                 placeholder="usuário"
-              ></app-input>
+                [error]="
+                  (formControl.name.dirty || submitted) &&
+                  formControl.name.invalid
+                "
+              >
+                <ng-container
+                  *ngIf="formControl.name.errors?.required"
+                  [ngTemplateOutlet]="required"
+                  [ngTemplateOutletContext]="{ name: 'nome de usuário' }"
+                ></ng-container>
+              </app-input>
+
               <app-input
                 type="password"
                 label="Senha de usuário"
                 formControlName="password"
                 placeholder="senha"
-              ></app-input>
+                [error]="
+                  (formControl.password.dirty || submitted) &&
+                  formControl.password.invalid
+                "
+              >
+                <ng-container
+                  *ngIf="formControl.password.errors?.require"
+                  [ngTemplateOutlet]="required"
+                  [ngTemplateOutletContext]="{ name: 'senha' }"
+                ></ng-container>
+              </app-input>
               <button
-                type="submit"
-                class="btn btn-primary"
+                app-button
+                type="button"
+                (click)="onSubmit()"
                 [disabled]="!form.valid"
-                routerLink=""
-                [replaceUrl]="true"
               >
                 Login
               </button>
             </form>
           </div>
         </app-user-form>
+        <ng-container *ngIf="!!loginErrorMessage">
+          <app-alert
+            type="warning"
+            [attached]
+            class="text-center"
+            (close)="onCloseAlert()"
+          >
+            {{ loginErrorMessage }}
+          </app-alert></ng-container
+        >
         <app-alert type="warning" [attached]="'top'" class="text-center">
           <i class="fas fa-question"></i> Ainda não possui cadastro?
           <a routerLink="/signin" [replaceUrl]="true">

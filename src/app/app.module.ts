@@ -1,7 +1,9 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { registerLocaleData } from '@angular/common';
+
 import ptBr from '@angular/common/locales/pt';
 
 import {
@@ -16,6 +18,7 @@ import {
   UtilService,
   ApiService,
   EventService,
+  TokenStorageService,
   CustomDateParserFormatter,
   DatepickerFormatter,
 } from './services';
@@ -39,6 +42,7 @@ import { DatepickerComponent } from './components/datepicker/datepicker.componen
 import { LeftPainelComponent } from './components/left-painel/left-painel.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { EventFormComponent } from './components/event-form/event-form.component';
+import { authInterceptorProviders } from './interceptors/auth.interceptor';
 
 registerLocaleData(ptBr);
 
@@ -66,6 +70,7 @@ registerLocaleData(ptBr);
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    HttpClientModule,
   ],
   providers: [
     AuthenticationService,
@@ -73,7 +78,9 @@ registerLocaleData(ptBr);
     ApiService,
     UtilService,
     EventService,
+    TokenStorageService,
     DatepickerFormatter,
+    authInterceptorProviders,
     { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter },
     { provide: LOCALE_ID, useValue: 'pt-PT' },
   ],

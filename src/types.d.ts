@@ -86,4 +86,9 @@ declare global {
     date: Date;
     events?: dateEvent[];
   };
+
+  type user = {
+    id: String;
+    name: String;
+  };
 }
