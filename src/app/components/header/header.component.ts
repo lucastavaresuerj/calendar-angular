@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, DayService } from 'src/app/services/';
+import {
+  AuthenticationService,
+  DayService,
+  TokenStorageService,
+} from 'src/app/services/';
 
 @Component({
   selector: 'app-header',
@@ -7,7 +11,8 @@ import { AuthenticationService, DayService } from 'src/app/services/';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  appDay!: String;
+  appDay!: string;
+  username!: string;
 
   dropdownActions = [
     {
@@ -16,9 +21,15 @@ export class HeaderComponent implements OnInit {
     },
   ];
 
-  constructor(public day: DayService, private auth: AuthenticationService) {}
+  constructor(
+    public day: DayService,
+    private auth: AuthenticationService,
+    private token: TokenStorageService
+  ) {}
 
   ngOnInit(): void {
+    this.username = this.token.getUser().name;
+
     this.day.getDayObservable().subscribe(
       (date) =>
         (this.appDay = date

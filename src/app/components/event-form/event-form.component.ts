@@ -25,7 +25,7 @@ import { ApiService, UtilService } from 'src/app/services';
   styleUrls: ['./event-form.component.scss'],
 })
 export class EventFormComponent implements OnInit {
-  public model!: { id: number; name: string };
+  public model!: user;
 
   name: string = '';
   begin!: NgbDate | null;
@@ -33,7 +33,7 @@ export class EventFormComponent implements OnInit {
   timeBegin!: NgbTimeStruct;
   timeEnd!: NgbTimeStruct;
   guests: guest[] = [];
-  allGuests!: guest[];
+  allUsers!: user[];
 
   submitted = false;
   modal!: NgbActiveModal;
@@ -92,7 +92,7 @@ export class EventFormComponent implements OnInit {
     private api: ApiService,
     private calendar: NgbCalendar
   ) {
-    this.allGuests = api.getUsers();
+    this.allUsers = api.getUsers();
   }
 
   get formControl() {
@@ -100,13 +100,13 @@ export class EventFormComponent implements OnInit {
   }
 
   get guestsList() {
-    return this.guests.map(({ name }) => name);
+    return this.guests.map(({ user: { name } }) => name);
   }
 
   ngOnInit(): void {}
 
   addGuest() {
-    this.guests.push(this.model);
+    this.guests.push({ user: this.model });
   }
 
   onRemoveGuest(index: number) {
@@ -195,7 +195,7 @@ export class EventFormComponent implements OnInit {
     return name;
   }
 
-  search: OperatorFunction<string, readonly { id: number; name: string }[]> = (
+  search: OperatorFunction<string, readonly { name: string }[]> = (
     text$: Observable<string>
   ) =>
     text$.pipe(
@@ -204,7 +204,7 @@ export class EventFormComponent implements OnInit {
       map((term) =>
         term === ''
           ? []
-          : this.allGuests.filter(
+          : this.allUsers.filter(
               (v) => v.name.toLowerCase().indexOf(term.toLowerCase()) > -1
             )
       )

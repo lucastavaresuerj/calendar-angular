@@ -63,16 +63,16 @@ export class AuthenticationService implements CanActivate {
   }
 
   login(user: User, callback: Function) {
-    return this.reqAuth(user, 'login').subscribe(
-      (data) => {
+    this.reqAuth(user, 'login').subscribe({
+      next: (data) => {
         this.authHandler(data, user.name);
         if (callback) callback(data);
       },
-      (err) => {
+      error: (err) => {
         console.log(err);
         this.auth = false;
-      }
-    );
+      },
+    });
   }
 
   // Ainda não tem uma rota para login na API...
@@ -82,16 +82,16 @@ export class AuthenticationService implements CanActivate {
   }
 
   signin(user: User, callback: Function) {
-    this.reqAuth(user, 'signin').subscribe(
-      (data) => {
+    this.reqAuth(user, 'signin').subscribe({
+      next: (data) => {
         this.authHandler(data, user.name);
         if (callback) callback(data);
       },
-      (err) => {
+      error: (err) => {
         console.log(err);
         this.auth = false;
-      }
-    );
+      },
+    });
   }
 
   isAuth() {

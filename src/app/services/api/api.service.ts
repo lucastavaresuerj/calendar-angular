@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Apollo, ApolloBase, gql, QueryRef } from 'apollo-angular';
+import { DocumentNode } from 'graphql';
+import { Observable, Subscription } from 'rxjs';
 
 import { UtilService } from '..';
 
@@ -36,49 +37,87 @@ export class ApiService {
   }
 
   // O retorno dessas função é o objeto que eu devo receber do back
-  getDays(initialDate: Date): any {
-    const daysKeys = [...this.db].reduce(this.formattDaysEvents, {} as any);
-    return Object.keys(daysKeys)
-      .map((date) => ({
-        date: new Date(date),
-        events: daysKeys[date],
-      }))
-      .sort((a, b) => (a.date.getTime() < b.date.getTime() ? -1 : 1))
-      .filter(({ date }) => this.util.dateDiffDay(date, initialDate) >= 0);
+  // getDays(initialDate: Date): any {
+  //   const daysKeys = [...this.db].reduce(this.formattDaysEvents, {} as any);
+  //   return Object.keys(daysKeys)
+  //     .map((date) => ({
+  //       date: new Date(date),
+  //       events: daysKeys[date],
+  //     }))
+  //     .sort((a, b) => (a.date.getTime() < b.date.getTime() ? -1 : 1))
+  //     .filter(({ date }) => this.util.dateDiffDay(date, initialDate) >= 0);
+  // }
+
+  getDays(range: DateRange, query?: DocumentNode): Observable<any> {
+    if (!query) {
+      query = gql`
+        query Query($range: DateRange!) {
+          days: userEvents(range: $range) {
+            date
+            events {
+              id
+              begin
+              end
+              name
+              owner {
+                name
+                id
+              }
+              guests {
+                user {
+                  name
+                  id
+                }
+                confirmation
+              }
+            }
+          }
+        }
+      `;
+    }
+    return this.apollo.watchQuery({
+      query,
+      variables: { range },
+    }).valueChanges;
   }
 
   users = [
-    { id: 1, name: 'José' },
-    { id: 2, name: 'Will' },
-    { id: 3, name: 'Grace' },
+    { id: '1', name: 'José' },
+    { id: '2', name: 'Will' },
+    { id: '3', name: 'Grace' },
   ];
 
   db: dateEvent[] = [
     {
+      id: '1',
       name: 'Evento rápido',
       begin: new Date(2021, 10, 22, 15, 0),
       end: new Date(2021, 10, 22, 15, 30),
       guests: [
-        { ...this.users[1], confirmation: true },
-        { ...this.users[2], confirmation: true },
+        { user: this.users[1], confirmation: true },
+        { user: this.users[2], confirmation: true },
       ],
     },
     {
+      id: '2',
       name: 'evento demorado',
       begin: new Date(2021, 10, 22, 17, 0),
       end: new Date(2021, 10, 24, 18, 0),
     },
     {
+      id: '3',
       name: 'sem criatividade para dar nomes de eventos',
       begin: new Date(2021, 10, 25, 9, 30),
       end: new Date(2021, 10, 26, 15, 0),
     },
     {
+      id: '4',
       name: 'Foi o melhor que eu consegui pensar',
       begin: new Date(2021, 10, 25, 20, 0),
       end: new Date(2021, 10, 25, 22, 0),
     },
     {
+      id: '5',
       name: 'Evento que pega quase o dia todo',
       begin: new Date(2021, 10, 29, 10, 0),
       end: new Date(2021, 10, 29, 22, 0),
@@ -97,7 +136,7 @@ export class ApiService {
     return;
   }
 
-  constructor(private util: UtilService) {
+  constructor(private util: UtilService, private apollo: Apollo) {
     this.formattDaysEvents = this.formattDaysEvents.bind(this);
   }
 }

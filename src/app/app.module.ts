@@ -43,6 +43,7 @@ import { LeftPainelComponent } from './components/left-painel/left-painel.compon
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { EventFormComponent } from './components/event-form/event-form.component';
 import { authInterceptorProviders } from './interceptors/auth.interceptor';
+import { ApolloGraphqlModule } from './apollo-graphql.module';
 
 registerLocaleData(ptBr);
 
@@ -71,6 +72,7 @@ registerLocaleData(ptBr);
     ReactiveFormsModule,
     NgbModule,
     HttpClientModule,
+    ApolloGraphqlModule,
   ],
   providers: [
     AuthenticationService,

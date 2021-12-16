@@ -58,6 +58,10 @@ export class EventComponent implements OnInit {
     }
   }
 
+  get actions(): { name: string }[] {
+    return this.event.guests?.map(({ user: { name } }) => ({ name })) || [];
+  }
+
   ngOnInit(): void {}
 
   editEvent(event: any) {

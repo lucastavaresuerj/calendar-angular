@@ -70,12 +70,17 @@ declare global {
   };
 
   type guest = {
-    id: number;
-    name: string;
+    user: user;
     confirmation?: boolean | 'awaiting';
   };
 
+  type DateRange = {
+    begin: Date;
+    end: Date;
+  };
+
   type dateEvent = {
+    id: string;
     name: string;
     begin: Date;
     end: Date;
@@ -88,7 +93,7 @@ declare global {
   };
 
   type user = {
-    id: String;
-    name: String;
+    id: string;
+    name: string;
   };
 }
