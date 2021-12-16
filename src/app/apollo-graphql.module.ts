@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
         return {
           cache: new InMemoryCache(),
           link: httpLink.create({
-            uri: 'https://localhost:4000/graphql',
+            uri: 'http://localhost:4000/graphql',
           }),
         };
       },

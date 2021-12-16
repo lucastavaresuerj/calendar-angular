@@ -16,14 +16,20 @@ export class DaysComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dayService.getDayObservable().subscribe((date) => {
-      const { year, month, day } = this.util.getDateAtt(date);
+    this.dayService.getDayObservable().subscribe((day) => {
+      const { year, month, date } = this.util.getDateAtt(day);
       this.api
         .getDays({
-          begin: new Date(year, month, day),
-          end: new Date(year, month, day + 15),
+          begin: new Date(year, month, date),
+          end: new Date(year, month, date + 15),
         })
-        .subscribe(({ days }) => (this.days = days));
+        .subscribe({
+          next: ({ data: { days } }) => {
+            console.log(days);
+            this.days = days;
+          },
+          error: (err) => console.log(err),
+        });
       console.log(this.days);
     });
   }

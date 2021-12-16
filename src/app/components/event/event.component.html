@@ -34,7 +34,7 @@
   </div>
 </ng-template>
 
-<td class="col-2">{{ getEventFormatTime() }}</td>
+<td class="col-2">{{ eventFormatTime }}</td>
 <td [style]="{ width: '60px' }">
   <app-event-form
     (onSave)="editEvent($event)"
@@ -51,8 +51,8 @@
 
 <td>
   <app-dropdown
-    *ngIf="event.guests; else noGuests"
-    [actions]="actions"
+    *ngIf="event?.guests; else noGuests"
+    [actions]="eventActions"
     title="Convidados"
     category="light"
     outline="dark"
