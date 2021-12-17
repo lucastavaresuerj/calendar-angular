@@ -69,6 +69,11 @@ declare global {
     [key in breakpoints]?: size;
   };
 
+  type user = {
+    id: string;
+    name: string;
+  };
+
   type guest = {
     user: user;
     confirmation?: boolean | 'awaiting';
@@ -90,10 +95,5 @@ declare global {
   type day = {
     date: Date;
     events?: dateEvent[];
-  };
-
-  type user = {
-    id: string;
-    name: string;
   };
 }

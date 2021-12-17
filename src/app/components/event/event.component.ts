@@ -31,11 +31,8 @@ export class EventComponent implements OnInit {
       timeStyle: 'short',
       hour12: true,
     };
+    const { begin, end } = this.event;
     const dateStyle = { dateStyle: 'short', hour12: true };
-    let { begin, end } = this.event;
-    begin = new Date(begin);
-    end = new Date(end);
-
     const toCompareAmPm = /(.*)(am|pm)(.*)(am|pm)/gi;
 
     if (this.util.dateDiffDay(begin, end) == 0) {
@@ -67,9 +64,9 @@ export class EventComponent implements OnInit {
       this.event.guests?.map(({ user: { name } }) => ({ name })) || [];
   }
 
-  editEvent(event: any) {
-    this.api.editEvent(event);
-    console.log(event);
+  editEvent(fields: any) {
+    this.api.editEvent(this.event.id, fields);
+    //console.log(event);
   }
 
   deleteEvent() {

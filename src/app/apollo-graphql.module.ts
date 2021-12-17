@@ -9,7 +9,9 @@ import { NgModule } from '@angular/core';
       provide: APOLLO_OPTIONS,
       useFactory: (httpLink: HttpLink) => {
         return {
-          cache: new InMemoryCache(),
+          cache: new InMemoryCache({
+            addTypename: false,
+          }),
           link: httpLink.create({
             uri: 'http://localhost:4000/graphql',
           }),

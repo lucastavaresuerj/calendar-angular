@@ -1,8 +1,9 @@
-<th scope="row" class="col-1">
+<th scope="row" class="col-2">
   <h2>
     <span [ngClass]="{ 'badge bg-primary rounded-pill': checkWithDayApp() }">
-      {{ dayDate.getDate() }}
+      {{ day.date.getDate() }}
     </span>
+    {{ dayMonth }}
   </h2>
 </th>
 <table class="table no-bottom-line table-hover table-event">

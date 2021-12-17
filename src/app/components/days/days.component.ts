@@ -30,7 +30,6 @@ export class DaysComponent implements OnInit {
           },
           error: (err) => console.log(err),
         });
-      console.log(this.days);
     });
   }
 }

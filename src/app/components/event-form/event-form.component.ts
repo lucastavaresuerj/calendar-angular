@@ -54,6 +54,21 @@ export class EventFormComponent implements OnInit {
     [this.dateValidator, this.timeValidator]
   );
 
+  constructor(
+    private modalService: NgbModal,
+    private util: UtilService,
+    private api: ApiService,
+    private calendar: NgbCalendar
+  ) {}
+
+  get formControl() {
+    return this.form.controls;
+  }
+
+  get guestsList() {
+    return this.guests.map(({ user: { name } }) => name);
+  }
+
   dateValidator(group: AbstractControl): ValidationErrors | null {
     const begin = group.get('begin')?.value;
     const end = group.get('end')?.value;
@@ -86,24 +101,13 @@ export class EventFormComponent implements OnInit {
     return error;
   }
 
-  constructor(
-    private modalService: NgbModal,
-    private util: UtilService,
-    private api: ApiService,
-    private calendar: NgbCalendar
-  ) {
-    this.allUsers = api.getUsers();
+  ngOnInit(): void {
+    this.api.getUsers().subscribe({
+      next: ({ data: { users } }) => {
+        this.allUsers = users;
+      },
+    });
   }
-
-  get formControl() {
-    return this.form.controls;
-  }
-
-  get guestsList() {
-    return this.guests.map(({ user: { name } }) => name);
-  }
-
-  ngOnInit(): void {}
 
   addGuest() {
     this.guests.push({ user: this.model });
@@ -118,12 +122,23 @@ export class EventFormComponent implements OnInit {
     this.submitted = true;
     if (this.form.valid) {
       this.modal.close();
-      const { typeahead, ...values } = this.form.value;
-      this.onSave.emit({ ...values, guests: this.guests });
+      const { begin, end, timeBegin, timeEnd, name, id } = this.form.value;
+      this.onSave.emit({
+        id,
+        name,
+        begin: this.util.createDateFromAtts({ ...begin, ...timeBegin }),
+        end: this.util.createDateFromAtts({ ...end, ...timeEnd }),
+        guests: this.guests.map(({ user: { id }, confirmation }) => ({
+          user: { id },
+          confirmation,
+        })),
+      });
     }
   }
 
   createEvent() {
+    console.log(this.allUsers);
+
     this.begin = this.calendar.getToday();
     this.end = this.begin;
 

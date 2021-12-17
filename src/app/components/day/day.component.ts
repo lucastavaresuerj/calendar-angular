@@ -15,11 +15,13 @@ export class DayComponent implements OnInit {
     // console.log(this.day);
   }
 
-  get dayDate() {
-    return new Date(this.day.date);
+  get dayMonth() {
+    return this.day.date.toLocaleString('pt-BR', {
+      month: 'short',
+    });
   }
 
   checkWithDayApp() {
-    return this.dayDate.getTime() === new Date().setHours(0, 0, 0, 0);
+    return this.day.date.getTime() === new Date().setHours(0, 0, 0, 0);
   }
 }

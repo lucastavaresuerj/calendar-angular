@@ -45,6 +45,8 @@ import { EventFormComponent } from './components/event-form/event-form.component
 import { authInterceptorProviders } from './interceptors/auth.interceptor';
 import { ApolloGraphqlModule } from './apollo-graphql.module';
 
+import './helpers/json-date';
+
 registerLocaleData(ptBr);
 
 @NgModule({
