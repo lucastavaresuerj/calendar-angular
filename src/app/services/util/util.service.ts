@@ -4,6 +4,8 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
   providedIn: 'root',
 })
 export class UtilService {
+  constructor(@Inject(LOCALE_ID) public locale: string) {}
+
   // One day = 86400000 miliseconds
   dateDiffDay(dayAfter: Date, dayBefore: Date) {
     return (
@@ -42,5 +44,21 @@ export class UtilService {
     };
   }
 
-  constructor(@Inject(LOCALE_ID) public locale: string) {}
+  createDateFromAtts(atts: any) {
+    console.log(atts);
+    const { year, month, day, date, hours, minutes, seconds, milliseconds } =
+      atts;
+
+    const d = new Date(
+      year,
+      month,
+      typeof day === 'undefined' ? date : day,
+      hours || 0,
+      minutes || 0,
+      seconds || 0,
+      milliseconds || 0
+    );
+    console.log(d);
+    return d;
+  }
 }

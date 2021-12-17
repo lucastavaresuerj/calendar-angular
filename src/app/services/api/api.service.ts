@@ -59,30 +59,28 @@ export class ApiService {
 
   editEvent(
     eventId: string,
-    fields: { name?: string; begin?: Date; end?: Date; guests?: guest[] },
+    event: { name?: string; begin?: Date; end?: Date; guests?: guest[] },
     query?: DocumentNode
   ): Observable<any> {
+    console.log({ ...event, id: eventId });
     if (!query) {
       query = gql`
-        query Query($range: DateRange!) {
-          days: userEvents(range: $range) {
-            date
-            events {
+        mutation Mutation($event: EventEdit) {
+          editEvent(event: $event) {
+            id
+            name
+            owner {
               id
-              begin
-              end
               name
-              owner {
-                name
+            }
+            begin
+            end
+            guests {
+              user {
                 id
+                name
               }
-              guests {
-                user {
-                  name
-                  id
-                }
-                confirmation
-              }
+              confirmation
             }
           }
         }
@@ -90,7 +88,7 @@ export class ApiService {
     }
     const daysQuery = this.apollo.watchQuery({
       query,
-      variables: fields,
+      variables: { event: { ...event, id: eventId } },
     });
     daysQuery.refetch();
     return daysQuery.valueChanges;
