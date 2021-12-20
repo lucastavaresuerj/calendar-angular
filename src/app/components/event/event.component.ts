@@ -1,6 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { fieldNameFromStoreName } from '@apollo/client/cache';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ApiService, UtilService } from 'src/app/services';
+import {
+  ApiService,
+  EventsService,
+  TokenStorageService,
+  UtilService,
+} from 'src/app/services';
 
 @Component({
   selector: '[app-event]',
@@ -11,13 +17,20 @@ export class EventComponent implements OnInit {
   @Input() event!: dateEvent;
   @Input() dayOfEvent!: Date;
 
+  isOwner!: boolean;
+  invitationResponse!: confirmation | undefined;
+  invitationCategory!: color;
+  invitationButtonText!: string;
+  guesResponseActions!: { name: string; click: Function }[];
   modalAlert!: NgbModalRef;
   eventActions!: { name: string }[];
 
   constructor(
     private util: UtilService,
     private api: ApiService,
-    private modalService: NgbModal
+    private tokenService: TokenStorageService,
+    private modalService: NgbModal,
+    private eventService: EventsService
   ) {}
 
   get eventFormatTime() {
@@ -59,18 +72,61 @@ export class EventComponent implements OnInit {
     }
   }
 
+  handleSubscribe() {
+    return { next: () => this.eventService.refresh() };
+  }
+
   ngOnInit(): void {
+    const userId = this.tokenService.getUserId();
+    this.isOwner = userId === this.event.owner.id;
+
+    if (!this.isOwner) {
+      this.invitationResponse = this.event.guests?.find(
+        ({ user: { id } }) => id == userId
+      )?.confirmation;
+
+      this.invitationCategory =
+        this.invitationResponse == 'awaiting'
+          ? 'primary'
+          : this.invitationResponse == true
+          ? 'success'
+          : 'warning';
+
+      this.invitationButtonText =
+        this.invitationResponse == 'awaiting'
+          ? 'Sem resposta'
+          : this.invitationResponse == true
+          ? 'Comparecer'
+          : 'Faltar';
+    }
+
     this.eventActions =
       this.event.guests?.map(({ user: { name } }) => ({ name })) || [];
+
+    this.guesResponseActions = [
+      {
+        name: 'Comparecer',
+        click: () =>
+          this.api
+            .changeGuestResponse(this.event.id, true)
+            .subscribe(this.handleSubscribe()),
+      },
+      {
+        name: 'Faltar',
+        click: () =>
+          this.api
+            .changeGuestResponse(this.event.id, false)
+            .subscribe(this.handleSubscribe()),
+      },
+    ];
   }
 
   editEvent(fields: any) {
-    this.api.editEvent(this.event.id, fields);
-    //console.log(event);
+    this.api.editEvent(this.event.id, fields).subscribe(this.handleSubscribe());
   }
 
   deleteEvent() {
-    this.api.deleteEvent(this.event);
+    this.api.deleteEvent(this.event.id).subscribe(this.handleSubscribe());
     this.modalAlert.close();
   }
 

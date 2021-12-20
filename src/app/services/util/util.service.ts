@@ -46,17 +46,29 @@ export class UtilService {
 
   createDateFromAtts(atts: any) {
     console.log(atts);
-    const { year, month, day, date, hours, minutes, seconds, milliseconds } =
-      atts;
+    const {
+      year,
+      month,
+      day,
+      date,
+      hours,
+      hour,
+      minutes,
+      minute,
+      seconds,
+      second,
+      millisecond,
+      milliseconds,
+    } = atts;
 
     const d = new Date(
       year,
       month,
       typeof day === 'undefined' ? date : day,
-      hours || 0,
-      minutes || 0,
-      seconds || 0,
-      milliseconds || 0
+      hours || hour || 0,
+      minutes || minute || 0,
+      seconds || second || 0,
+      milliseconds || milliseconds || 0
     );
     console.log(d);
     return d;

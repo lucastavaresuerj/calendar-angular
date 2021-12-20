@@ -115,7 +115,6 @@ export class EventFormComponent implements OnInit {
 
   onRemoveGuest(index: number) {
     this.guests.splice(index, 1);
-    console.log(this.guests);
   }
 
   save() {
@@ -126,8 +125,16 @@ export class EventFormComponent implements OnInit {
       this.onSave.emit({
         id,
         name,
-        begin: this.util.createDateFromAtts({ ...begin, ...timeBegin }),
-        end: this.util.createDateFromAtts({ ...end, ...timeEnd }),
+        begin: this.util.createDateFromAtts({
+          ...begin,
+          month: begin.month - 1,
+          ...timeBegin,
+        }),
+        end: this.util.createDateFromAtts({
+          ...end,
+          month: end.month - 1,
+          ...timeEnd,
+        }),
         guests: this.guests.map(({ user: { id }, confirmation }) => ({
           user: { id },
           confirmation,
@@ -137,8 +144,6 @@ export class EventFormComponent implements OnInit {
   }
 
   createEvent() {
-    console.log(this.allUsers);
-
     this.begin = this.calendar.getToday();
     this.end = this.begin;
 
@@ -155,9 +160,9 @@ export class EventFormComponent implements OnInit {
     };
   }
 
-  inputEvent() {
+  fill() {
     const { name, begin, end, guests } = this.event;
-    this.guests = guests || [];
+    this.guests = guests ? [...guests] : [];
 
     console.log(this.event);
 
@@ -166,8 +171,8 @@ export class EventFormComponent implements OnInit {
     const beginAtts = this.util.getDateAtt(begin);
     this.begin = NgbDate.from({
       year: beginAtts.year,
-      month: beginAtts.month,
-      day: beginAtts.day,
+      month: beginAtts.month + 1,
+      day: beginAtts.date,
     } as NgbDateStruct);
     this.timeBegin = {
       hour: beginAtts.hours,
@@ -178,8 +183,8 @@ export class EventFormComponent implements OnInit {
     const endAtts = this.util.getDateAtt(end);
     this.end = NgbDate.from({
       year: endAtts.year,
-      month: endAtts.month,
-      day: endAtts.day,
+      month: endAtts.month + 1,
+      day: endAtts.date,
     } as NgbDateStruct);
     this.timeEnd = {
       hour: endAtts.hours,
@@ -190,7 +195,7 @@ export class EventFormComponent implements OnInit {
 
   initFields() {
     if (this.event) {
-      this.inputEvent();
+      this.fill();
     } else {
       this.createEvent();
     }

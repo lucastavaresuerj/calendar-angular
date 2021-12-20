@@ -5,6 +5,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { ApiService, EventsService } from 'src/app/services';
 
 @Component({
   selector: 'app-left-painel',
@@ -16,13 +17,15 @@ export class LeftPainelComponent implements OnInit {
 
   title: string = 'Criar evento';
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private api: ApiService, private eventService: EventsService) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit() {}
 
-  createEvent(event: string) {
-    console.log(event);
+  createEvent(event: dateEvent) {
+    this.api
+      .createEvent(event)
+      .subscribe({ next: () => this.eventService.refresh() });
   }
 }

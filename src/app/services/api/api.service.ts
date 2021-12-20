@@ -9,7 +9,23 @@ import { Observable, Subscription } from 'rxjs';
 export class ApiService {
   constructor(private apollo: Apollo) {}
 
-  getDays(range: DateRange, query?: DocumentNode): Observable<any> {
+  getDaysQuery(
+    range?: DateRange,
+    query?: DocumentNode
+  ): QueryRef<
+    any,
+    {
+      range: DateRange;
+    }
+  > {
+    if (!range) {
+      const date = new Date();
+      range = {
+        begin: date,
+        end: new Date(new Date(date).setDate(date.getDate() + 15)),
+      };
+    }
+
     if (!query) {
       query = gql`
         query Query($range: DateRange!) {
@@ -40,8 +56,7 @@ export class ApiService {
       query,
       variables: { range },
     });
-    daysQuery.refetch();
-    return daysQuery.valueChanges;
+    return daysQuery;
   }
 
   getUsers(): Observable<any> {
@@ -57,14 +72,56 @@ export class ApiService {
     }).valueChanges;
   }
 
+  createEvent(
+    event: {
+      name: string;
+      begin: Date;
+      end: Date;
+      guests?: guest[];
+    },
+    mutation?: DocumentNode
+  ): Observable<any> {
+    if (!mutation) {
+      mutation = gql`
+        mutation Mutation($event: EventCreate) {
+          createEvent(event: $event) {
+            id
+            name
+            owner {
+              id
+              name
+            }
+            begin
+            end
+            guests {
+              user {
+                id
+                name
+              }
+              confirmation
+            }
+          }
+        }
+      `;
+    }
+    return this.apollo.mutate({
+      mutation,
+      variables: { event },
+    });
+  }
+
   editEvent(
     eventId: string,
-    event: { name?: string; begin?: Date; end?: Date; guests?: guest[] },
-    query?: DocumentNode
+    event: {
+      name?: string;
+      begin?: Date;
+      end?: Date;
+      guests?: guest[];
+    },
+    mutation?: DocumentNode
   ): Observable<any> {
-    console.log({ ...event, id: eventId });
-    if (!query) {
-      query = gql`
+    if (!mutation) {
+      mutation = gql`
         mutation Mutation($event: EventEdit) {
           editEvent(event: $event) {
             id
@@ -86,15 +143,63 @@ export class ApiService {
         }
       `;
     }
-    const daysQuery = this.apollo.watchQuery({
-      query,
+    return this.apollo.mutate({
+      mutation,
       variables: { event: { ...event, id: eventId } },
     });
-    daysQuery.refetch();
-    return daysQuery.valueChanges;
   }
 
-  deleteEvent(event: any) {
-    return;
+  deleteEvent(eventId: string, mutation?: DocumentNode): Observable<any> {
+    if (!mutation) {
+      mutation = gql`
+        mutation DeleteEvent($event: EventInput) {
+          deleteEvent(event: $event) {
+            id
+            name
+            owner {
+              id
+              name
+            }
+            begin
+            end
+            guests {
+              user {
+                id
+                name
+              }
+              confirmation
+            }
+          }
+        }
+      `;
+    }
+    return this.apollo.mutate({
+      mutation,
+      variables: { event: { id: eventId } },
+    });
+  }
+
+  changeGuestResponse(
+    eventId: string,
+    confirmation: confirmation,
+    mutation?: DocumentNode
+  ): Observable<any> {
+    if (!mutation) {
+      mutation = gql`
+        mutation Mutation($guest: GuestEditStatus) {
+          changeConfirmation(guest: $guest) {
+            user {
+              id
+              name
+            }
+            confirmation
+          }
+        }
+      `;
+    }
+    return this.apollo.mutate({
+      mutation,
+      variables: { guest: { event: { id: eventId }, confirmation } },
+    });
   }
 }
