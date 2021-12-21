@@ -57,12 +57,27 @@
   {{ event.name }}
 </td>
 
+<td>de: {{ event.owner.name }}</td>
+
+<ng-template #dropdownGuestsTemplate let-action>
+  <li>
+    <a class="dropdown-item">
+      {{ action.name }}
+      <ng-container [ngSwitch]="action.context.confirmation">
+        <i *ngSwitchCase="true" class="fas fa-check-circle"></i>
+        <i *ngSwitchCase="'awaiting'" class="fas fa-hourglass-half"></i>
+        <i *ngSwitchCase="false" class="fas fa-times-circle"></i>
+      </ng-container>
+    </a>
+  </li>
+</ng-template>
+
 <td>
   <app-dropdown
     *ngIf="event?.guests; else noGuests"
     [actions]="eventActions"
+    [customList]="dropdownGuestsTemplate"
     title="Convidados"
-    category="light"
     outline="dark"
   ></app-dropdown>
   <ng-template #noGuests> Sem convidados </ng-template>

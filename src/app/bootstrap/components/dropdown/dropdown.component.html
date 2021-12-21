@@ -1,3 +1,15 @@
+<ng-template #defaultList let-action>
+  <li>
+    <a
+      class="dropdown-item"
+      [routerLink]="[action.href ? action.href : '']"
+      routerLinkActive="router-link-active"
+      (click)="action.click && action.click()"
+      >{{ action.name }}</a
+    >
+  </li>
+</ng-template>
+
 <div class="dropdown">
   <button
     app-button
@@ -10,15 +22,11 @@
     {{ title }}
   </button>
   <ul class="dropdown-menu">
-    <li *ngFor="let action of actions">
-      <a
-        class="dropdown-item"
-        [routerLink]="[action.href ? action.href : '']"
-        routerLinkActive="router-link-active"
-        (click)="action.click && action.click()"
-        >{{ action.name }}</a
-      >
-    </li>
+    <ng-container *ngFor="let action of actions">
+      <ng-container
+        *ngTemplateOutlet="template; context: { $implicit: action }"
+      ></ng-container>
+    </ng-container>
   </ul>
 </div>
 

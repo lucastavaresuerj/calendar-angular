@@ -23,7 +23,10 @@ export class EventComponent implements OnInit {
   invitationButtonText!: string;
   guesResponseActions!: { name: string; click: Function }[];
   modalAlert!: NgbModalRef;
-  eventActions!: { name: string }[];
+  eventActions!: {
+    name: string;
+    context: { confirmation: confirmation };
+  }[];
 
   constructor(
     private util: UtilService,
@@ -101,7 +104,10 @@ export class EventComponent implements OnInit {
     }
 
     this.eventActions =
-      this.event.guests?.map(({ user: { name } }) => ({ name })) || [];
+      this.event.guests?.map(({ user: { name }, confirmation }) => ({
+        name,
+        context: { confirmation: confirmation || false },
+      })) || [];
 
     this.guesResponseActions = [
       {
