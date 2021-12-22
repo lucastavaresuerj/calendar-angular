@@ -33,6 +33,12 @@
 </ng-template>
 
 <td class="col-2">{{ eventFormatTime }}</td>
+
+<td class="col-2">
+  <ng-container *ngIf="isOwner">Evento próprio</ng-container>
+  <ng-container *ngIf="!isOwner">de: {{ event.owner.name }}</ng-container>
+</td>
+
 <td [style]="{ width: '145px' }">
   <ng-container *ngIf="isOwner; else isGuest">
     <app-event-form
@@ -56,8 +62,6 @@
 <td class="col-4">
   {{ event.name }}
 </td>
-
-<td>de: {{ event.owner.name }}</td>
 
 <ng-template #dropdownGuestsTemplate let-action>
   <li>

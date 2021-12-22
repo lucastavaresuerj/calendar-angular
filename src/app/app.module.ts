@@ -38,6 +38,7 @@ import { PageComponent } from './components/page/page.component';
 import { DaysComponent } from './components/days/days.component';
 import { EventComponent } from './components/event/event.component';
 import { HeaderComponent } from './components/header/header.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
 import { LeftPainelComponent } from './components/left-painel/left-painel.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
@@ -57,6 +58,7 @@ registerLocaleData(ptBr);
     WebCalendarComponent,
     LoginComponent,
     HeaderComponent,
+    UserFormComponent,
     LeftPainelComponent,
     DatepickerComponent,
     DaysComponent,

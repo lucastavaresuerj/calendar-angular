@@ -117,14 +117,14 @@
             </form>
           </div>
         </app-user-form>
-        <ng-container *ngIf="!!loginErrorMessage">
+        <ng-container *ngIf="!!signinErrorMessage">
           <app-alert
             type="warning"
             [attached]
             class="text-center"
             (close)="onCloseAlert()"
           >
-            {{ loginErrorMessage }}
+            {{ signinErrorMessage }}
           </app-alert></ng-container
         >
         <app-alert type="warning" [attached]="'top'" class="text-center">

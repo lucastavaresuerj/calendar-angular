@@ -1,15 +1,21 @@
 <th scope="row" [style]="{ width: '180px' }">
-  <h2>
+  <h2 class="date">
     <span [ngClass]="{ 'badge bg-primary rounded-pill': checkWithDayApp() }">
       {{ day.date.getDate() }}
     </span>
     {{ dayMonth }}
   </h2>
 </th>
-<table class="table no-bottom-line table-hover table-event">
+<table class="table day-table no-bottom-line table-hover table-event">
   <tbody>
     <ng-container *ngFor="let event of day.events">
-      <tr app-event [dayOfEvent]="day.date" [event]="event"></tr>
+      <tr
+        app-event
+        [dayOfEvent]="day.date"
+        [event]="event"
+        flex
+        align-items="center"
+      ></tr>
     </ng-container>
   </tbody>
 </table>

@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { AuthenticationService } from 'src/app/services';
@@ -8,9 +9,14 @@ import { AuthenticationService } from 'src/app/services';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   submitted = false;
+  loading!: {
+    status: boolean;
+    timer?: NodeJS.Timeout;
+  };
   loginErrorMessage = '';
+
   form: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(2)]),
     password: new FormControl('', [Validators.required]),
@@ -18,15 +24,18 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthenticationService) {}
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    if (this.loading.timer) {
+      clearTimeout(this.loading.timer);
+    }
+  }
+
+  ngOnInit(): void {
+    this.loading = { status: false };
+  }
 
   get formControl() {
     return this.form.controls;
-  }
-
-  printForm(): void {
-    console.log(this.form);
-    console.log(this.loginErrorMessage);
   }
 
   onCloseAlert() {
@@ -34,8 +43,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.form.value);
-    this.authService.login(this.form.value, (data: any) => {
+    this.loading = {
+      status: true,
+      timer: setTimeout(() => (this.loading.status = false), 1000),
+    };
+    this.loginErrorMessage = '';
+
+    this.authService.login(this.form.value, (data: HttpErrorResponse | any) => {
+      if (data instanceof HttpErrorResponse) {
+        this.loginErrorMessage = 'Não foi possível comunicar com o servidor';
+      }
       if (data.extensions) {
         this.loginErrorMessage = data.message;
       }

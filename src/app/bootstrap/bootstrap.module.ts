@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { InputComponent } from './components/input/input.component';
-import { UserFormComponent } from './components/user-form/user-form.component';
 import { GridModule } from './components/grid/grid.module';
 import { RowComponent } from './components/grid/row/row.component';
 import { ColComponent } from './components/grid/col/col.component';
@@ -28,7 +27,6 @@ import { ListGroupComponent } from './components/list-group/list-group.component
 
 const declarations: any[] = [
   InputComponent,
-  UserFormComponent,
   AlertComponent,
   ButtonComponent,
   DropdownComponent,

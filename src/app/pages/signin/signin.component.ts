@@ -1,4 +1,11 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  Component,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -14,9 +21,13 @@ import { AuthenticationService } from 'src/app/services';
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.scss'],
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
   submitted = false;
-  loginErrorMessage = '';
+  loading!: {
+    status: boolean;
+    timer?: NodeJS.Timeout;
+  };
+  signinErrorMessage = '';
   minLengthPass = 6;
 
   form: FormGroup = new FormGroup(
@@ -49,6 +60,12 @@ export class SigninComponent implements OnInit {
 
   constructor(private authService: AuthenticationService) {}
 
+  ngOnDestroy(): void {
+    if (this.loading.timer) {
+      clearTimeout(this.loading.timer);
+    }
+  }
+
   ngOnInit(): void {}
 
   get formControl() {
@@ -56,17 +73,29 @@ export class SigninComponent implements OnInit {
   }
 
   onCloseAlert() {
-    this.loginErrorMessage = '';
+    this.signinErrorMessage = '';
   }
 
   onSubmit() {
+    this.loading = {
+      status: true,
+      timer: setTimeout(() => (this.loading.status = false), 1000),
+    };
+    this.signinErrorMessage = '';
+
     const { name, password } = this.form.value;
 
-    this.authService.signin({ name, password }, (data: any) => {
-      if (data.extensions) {
-        this.loginErrorMessage = data.message;
+    this.authService.signin(
+      { name, password },
+      (data: HttpErrorResponse | any) => {
+        if (data instanceof HttpErrorResponse) {
+          this.signinErrorMessage = 'Não foi possível comunicar com o servidor';
+        }
+        if (data.extensions) {
+          this.signinErrorMessage = data.message;
+        }
+        this.submitted = true;
       }
-      this.submitted = true;
-    });
+    );
   }
 }

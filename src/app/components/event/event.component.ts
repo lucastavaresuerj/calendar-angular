@@ -37,21 +37,19 @@ export class EventComponent implements OnInit {
   ) {}
 
   get eventFormatTime() {
-    // Gambiarra: o TypeScript não aceita todos as opções de data que o JavaScript
-    // options TypeScript: https://microsoft.github.io/PowerBI-JavaScript/interfaces/_node_modules_typedoc_node_modules_typescript_lib_lib_es5_d_.intl.datetimeformatoptions.html
-    // options JavaScript: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
-    // Ao colocar pelo menos um campo que o TypeScript aceita, é possível colocar outros campos que ele não aceita que vai rodar do mesmo jeito que o JavaScript
-    // por isso que o hour12 está na constante dateStyle...
-
-    const dateOptions = {
+    const dateOptions: Intl.DateTimeFormatOptions = {
       timeStyle: 'short',
       hour12: true,
     };
+    const dateStyle: Intl.DateTimeFormatOptions = {
+      dateStyle: 'short',
+    };
+
     const { begin, end } = this.event;
-    const dateStyle = { dateStyle: 'short', hour12: true };
+
     const toCompareAmPm = /(.*)(am|pm)(.*)(am|pm)/gi;
 
-    if (this.util.dateDiffDay(begin, end) == 0) {
+    if (this.util.dateDiffDay(end, begin) == 0) {
       return `${begin.toLocaleTimeString(
         'pt-BR',
         dateOptions
@@ -83,26 +81,6 @@ export class EventComponent implements OnInit {
     const userId = this.tokenService.getUserId();
     this.isOwner = userId === this.event.owner.id;
 
-    if (!this.isOwner) {
-      this.invitationResponse = this.event.guests?.find(
-        ({ user: { id } }) => id == userId
-      )?.confirmation;
-
-      this.invitationCategory =
-        this.invitationResponse == 'awaiting'
-          ? 'primary'
-          : this.invitationResponse == true
-          ? 'success'
-          : 'warning';
-
-      this.invitationButtonText =
-        this.invitationResponse == 'awaiting'
-          ? 'Sem resposta'
-          : this.invitationResponse == true
-          ? 'Comparecer'
-          : 'Faltar';
-    }
-
     this.eventActions =
       this.event.guests?.map(({ user: { name }, confirmation }) => ({
         name,
@@ -125,6 +103,32 @@ export class EventComponent implements OnInit {
             .subscribe(this.handleSubscribe()),
       },
     ];
+
+    if (!this.isOwner) {
+      this.invitationResponse = this.event.guests?.find(
+        ({ user: { id } }) => id == userId
+      )?.confirmation;
+
+      switch (this.invitationResponse) {
+        case 'awaiting':
+          this.invitationCategory = 'primary';
+          this.invitationButtonText = 'Sem resposta';
+          break;
+        case true:
+          this.invitationCategory = 'success';
+          this.invitationButtonText = 'Comparecer';
+          break;
+        case false:
+          this.invitationCategory = 'warning';
+          this.invitationButtonText = 'Faltar';
+          break;
+        default:
+          throw new Error(
+            "Don't was possible to determine the status of invitation"
+          );
+          break;
+      }
+    }
   }
 
   editEvent(fields: any) {

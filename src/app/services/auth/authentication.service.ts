@@ -49,30 +49,56 @@ export class AuthenticationService implements CanActivate {
     );
   }
 
-  authHandler(data: any, name: string) {
-    // console.log(data);
-    if (data.extensions) {
-      this.auth = false;
-      return;
-    }
-    this.tokenStorage.saveToken(data.token);
-    this.tokenStorage.saveUser({ name });
+  authHandler(name: string, callback?: Function) {
+    return {
+      next: (data: any) => {
+        if (data.extensions) {
+          this.auth = false;
+          return;
+        }
+        this.tokenStorage.saveToken(data.token);
+        this.tokenStorage.saveUser({ name });
 
-    this.auth = true;
-    this.router.navigate(['/']);
+        this.auth = true;
+        this.router.navigate(['/']);
+
+        if (callback) callback(data);
+      },
+      error: (err: Error) => {
+        console.log(err);
+        if (callback) callback(err);
+        this.auth = false;
+      },
+    };
+
+    // console.log(data);
+    // if (data.extensions) {
+    //   this.auth = false;
+    //   return;
+    // }
+    // this.tokenStorage.saveToken(data.token);
+    // this.tokenStorage.saveUser({ name });
+
+    // this.auth = true;
+    // this.router.navigate(['/']);
   }
 
   login(user: User, callback: Function) {
-    this.reqAuth(user, 'login').subscribe({
-      next: (data) => {
-        this.authHandler(data, user.name);
-        if (callback) callback(data);
-      },
-      error: (err) => {
-        console.log(err);
-        this.auth = false;
-      },
-    });
+    this.reqAuth(user, 'login').subscribe(
+      this.authHandler(user.name, callback)
+    );
+
+    // .subscribe({
+    //   next: (data) => {
+    //     this.authHandler(data, user.name);
+    //     if (callback) callback(data);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //     if (callback) callback(data);
+    //     this.auth = false;
+    //   },
+    // }) ;
   }
 
   // Ainda não tem uma rota para login na API...
@@ -82,16 +108,20 @@ export class AuthenticationService implements CanActivate {
   }
 
   signin(user: User, callback: Function) {
-    this.reqAuth(user, 'signin').subscribe({
-      next: (data) => {
-        this.authHandler(data, user.name);
-        if (callback) callback(data);
-      },
-      error: (err) => {
-        console.log(err);
-        this.auth = false;
-      },
-    });
+    this.reqAuth(user, 'signin').subscribe(
+      this.authHandler(user.name, callback)
+    );
+
+    // .subscribe({
+    //   next: (data) => {
+    //     this.authHandler(data, user.name);
+    //     if (callback) callback(data);
+    //   },
+    //   error: (err) => {
+    //     console.log(err);
+    //     this.auth = false;
+    //   },
+    // });
   }
 
   isAuth() {
