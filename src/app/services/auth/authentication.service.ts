@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 import { TokenStorageService } from '../';
-import { catchError } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -38,15 +37,8 @@ export class AuthenticationService implements CanActivate {
     return this.auth;
   }
 
-  reqAuth({ name, password }: User, type: 'login' | 'signin'): Observable<any> {
-    return this.http.post(
-      AUTH_API + type,
-      {
-        name,
-        password,
-      },
-      httpOptions
-    );
+  reqAuth(type: 'login' | 'signin' | 'logout', user?: User): Observable<any> {
+    return this.http.post(AUTH_API + type, user, httpOptions);
   }
 
   authHandler(name: string, callback?: Function) {
@@ -70,58 +62,28 @@ export class AuthenticationService implements CanActivate {
         this.auth = false;
       },
     };
-
-    // console.log(data);
-    // if (data.extensions) {
-    //   this.auth = false;
-    //   return;
-    // }
-    // this.tokenStorage.saveToken(data.token);
-    // this.tokenStorage.saveUser({ name });
-
-    // this.auth = true;
-    // this.router.navigate(['/']);
   }
 
   login(user: User, callback: Function) {
-    this.reqAuth(user, 'login').subscribe(
+    this.reqAuth('login', user).subscribe(
       this.authHandler(user.name, callback)
     );
-
-    // .subscribe({
-    //   next: (data) => {
-    //     this.authHandler(data, user.name);
-    //     if (callback) callback(data);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //     if (callback) callback(data);
-    //     this.auth = false;
-    //   },
-    // }) ;
   }
 
-  // Ainda não tem uma rota para login na API...
   logout() {
-    this.auth = false;
-    this.router.navigate(['/login']);
+    this.reqAuth('logout').subscribe({
+      next: (data) => {
+        this.auth = false;
+        this.router.navigate(['/login']);
+      },
+      error: (err) => console.log(err),
+    });
   }
 
   signin(user: User, callback: Function) {
-    this.reqAuth(user, 'signin').subscribe(
+    this.reqAuth('signin', user).subscribe(
       this.authHandler(user.name, callback)
     );
-
-    // .subscribe({
-    //   next: (data) => {
-    //     this.authHandler(data, user.name);
-    //     if (callback) callback(data);
-    //   },
-    //   error: (err) => {
-    //     console.log(err);
-    //     this.auth = false;
-    //   },
-    // });
   }
 
   isAuth() {
