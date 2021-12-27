@@ -47,16 +47,19 @@ export class LoginComponent implements OnInit, OnDestroy {
       status: true,
       timer: setTimeout(() => (this.loading.status = false), 1000),
     };
-    this.loginErrorMessage = '';
 
-    this.authService.login(this.form.value, (data: HttpErrorResponse | any) => {
-      if (data instanceof HttpErrorResponse) {
-        this.loginErrorMessage = 'Não foi possível comunicar com o servidor';
-      }
-      if (data.extensions) {
-        this.loginErrorMessage = data.message;
-      }
-      this.submitted = true;
+    this.authService.login(this.form.value).subscribe({
+      next: (res: any) => {
+        if (res.extensions) {
+          this.loginErrorMessage = res.message;
+          return;
+        }
+
+        this.authService.authHandler(this.form.value.name, res.token);
+      },
+      error: (err) => {
+        this.loginErrorMessage = err.message;
+      },
     });
   }
 }

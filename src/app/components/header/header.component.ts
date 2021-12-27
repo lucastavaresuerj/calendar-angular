@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   AuthenticationService,
   DayService,
@@ -14,18 +15,26 @@ export class HeaderComponent implements OnInit {
   appDay!: string;
   username!: string;
 
+  constructor(
+    public day: DayService,
+    private authService: AuthenticationService,
+    private token: TokenStorageService,
+    private router: Router
+  ) {}
+
   dropdownActions = [
     {
       name: 'sair',
-      click: () => this.auth.logout(),
+      click: () =>
+        this.authService.logout().subscribe({
+          next: () => {
+            this.authService.isAuthenticated = false;
+            this.router.navigate(['/login']);
+          },
+          error: (err) => console.log(err),
+        }),
     },
   ];
-
-  constructor(
-    public day: DayService,
-    private auth: AuthenticationService,
-    private token: TokenStorageService
-  ) {}
 
   ngOnInit(): void {
     this.username = this.token.getUser().name;

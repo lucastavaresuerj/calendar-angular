@@ -85,17 +85,17 @@ export class SigninComponent implements OnInit, OnDestroy {
 
     const { name, password } = this.form.value;
 
-    this.authService.signin(
-      { name, password },
-      (data: HttpErrorResponse | any) => {
-        if (data instanceof HttpErrorResponse) {
-          this.signinErrorMessage = 'Não foi possível comunicar com o servidor';
+    this.authService.signin({ name, password }).subscribe({
+      next: (res: any) => {
+        if (res.erros) {
+          this.signinErrorMessage = res.erros[0].message;
         }
-        if (data.extensions) {
-          this.signinErrorMessage = data.message;
-        }
-        this.submitted = true;
-      }
-    );
+
+        this.authService.authHandler(this.form.value.name, res.token);
+      },
+      error: (err) => {
+        this.signinErrorMessage = err.message;
+      },
+    });
   }
 }

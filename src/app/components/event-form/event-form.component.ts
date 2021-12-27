@@ -51,8 +51,43 @@ export class EventFormComponent implements OnInit {
       timeEnd: new FormControl(this.timeEnd, [Validators.required]),
       typeahead: new FormControl(''),
     },
-    [this.dateValidator, this.timeValidator]
+    [this.dayValidator, this.timeValidator]
   );
+
+  dayValidator(group: AbstractControl): ValidationErrors | null {
+    const begin = group.get('begin')?.value;
+    const end = group.get('end')?.value;
+
+    let error: ValidationErrors | null = null;
+
+    if (
+      new Date(begin?.year, begin?.month, begin?.day).getTime() >
+      new Date(end?.year, end?.month, end?.day).getTime()
+    ) {
+      error = { day: 'Begin date is greater than end date' };
+    }
+
+    return error;
+  }
+
+  timeValidator(group: AbstractControl): ValidationErrors | null {
+    if (!group.errors?.day) {
+      return null;
+    }
+    const timeBegin = group.get('timeBegin')?.value;
+    const timeEnd = group.get('timeEnd')?.value;
+
+    let error: ValidationErrors | null = null;
+
+    if (
+      timeBegin?.hour > timeEnd?.hour ||
+      (timeBegin?.hour == timeEnd?.hour && timeBegin?.minute > timeEnd?.minute)
+    ) {
+      error = { time: 'Begin hour is greater than end hour' };
+    }
+
+    return error;
+  }
 
   constructor(
     private modalService: NgbModal,
@@ -67,38 +102,6 @@ export class EventFormComponent implements OnInit {
 
   get guestsList() {
     return this.guests.map(({ user: { name } }) => name);
-  }
-
-  dateValidator(group: AbstractControl): ValidationErrors | null {
-    const begin = group.get('begin')?.value;
-    const end = group.get('end')?.value;
-
-    let error: ValidationErrors | null = null;
-
-    if (
-      new Date(begin?.year, begin?.month, begin?.day).getTime() >
-      new Date(end?.year, end?.month, end?.day).getTime()
-    ) {
-      error = { date: 'Begin date is greater than end date' };
-    }
-
-    return error;
-  }
-
-  timeValidator(group: AbstractControl): ValidationErrors | null {
-    const timeBegin = group.get('timeBegin')?.value;
-    const timeEnd = group.get('timeEnd')?.value;
-
-    let error: ValidationErrors | null = null;
-
-    if (
-      timeBegin?.hour > timeEnd?.hour ||
-      (timeBegin?.hour == timeEnd?.hour && timeBegin?.minute > timeEnd?.minute)
-    ) {
-      error = { time: 'Begin hour is greater than end hour' };
-    }
-
-    return error;
   }
 
   ngOnInit(): void {
