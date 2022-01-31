@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/services';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  submitted = false;
+  isSubmitted = false;
   loading!: {
     status: boolean;
     timer?: NodeJS.Timeout;
@@ -18,8 +18,14 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginErrorMessage = '';
 
   form: FormGroup = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    password: new FormControl('', [Validators.required]),
+    name: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(2)],
+      updateOn: 'change',
+    }),
+    password: new FormControl('', {
+      validators: [Validators.required],
+      updateOn: 'change',
+    }),
   });
 
   constructor(private authService: AuthenticationService) {}

@@ -18,11 +18,12 @@
             <form [formGroup]="form">
               <app-input
                 type="text"
+                name="name"
                 label="Nome de usuário"
                 formControlName="name"
                 placeholder="usuário"
                 [error]="
-                  (formControl.name.dirty || submitted) &&
+                  (formControl.name.dirty || isSubmitted) &&
                   formControl.name.invalid
                 "
               >
@@ -35,11 +36,12 @@
 
               <app-input
                 type="password"
+                name="password"
                 label="Senha de usuário"
                 formControlName="password"
                 placeholder="senha"
                 [error]="
-                  (formControl.password.dirty || submitted) &&
+                  (formControl.password.dirty || isSubmitted) &&
                   formControl.password.invalid
                 "
               >
@@ -53,7 +55,7 @@
                 app-button
                 type="button"
                 (click)="onSubmit()"
-                [disabled]="!form.valid || loading.status"
+                [disabled]="loading.status || !form.valid"
               >
                 Login
               </button>
